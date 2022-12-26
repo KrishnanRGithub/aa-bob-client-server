@@ -5,9 +5,15 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import Paragraph from "../components/Paragraph";
 import TextInput from "../components/TextInput";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, Linking } from "react-native";
 import { numberValidator } from "../helpers/numberValidator";
+// import { StyleSheet, WebView, Platform} from 'react-native-webview';
+
 const config = require("../../config");
+
+
+
+// open your gateway
 
 export default function StartScreen({ navigation }) {
   const [number, setNumber] = useState({ value: "", error: "" });
@@ -22,15 +28,20 @@ export default function StartScreen({ navigation }) {
       setLoading(false);
     } else {
       try {
-        let url = config.server_url + "/init/" + number.value;
+        let url = "http://"+config.server_url + "/init/" + number.value;
         console.log(url);
 
-        const response = await fetch(url);
+        const response = await fetch(url,  {headers: {
+          'Content-Type': 'application/json'
+        }});
         console.log("Response fetched from AA");
 
-        const json = await response.text();
-        console.log(json);
-        navigation.navigate("Dashboard", { param: json });
+        const AaUrl = await response.text();
+        console.log("Fetched Response AaURL : "+AaUrl);
+        // Linking.openURL(AaUrl);
+   
+        // return <Link source={{ uri: AaUrl }} />;
+        navigation.navigate("Dashboard", { param: AaUrl });
       } catch (error) {
         console.error(error + " Start Screen");
       } finally {

@@ -10,7 +10,7 @@ const initConsent = (mobileNumber) => {
     trackingId: uuidv4(),
     redirectionUrl: "https://"+config.hosted_url + "/redirect",
   });
-  console.log(data);
+  // console.log(data);
   return data;
 };
 

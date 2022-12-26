@@ -40,8 +40,8 @@ app.get("/init/:mobileNumber", (req, res) => {
   };
   axios(requestConfig)
     .then(function (response) {
-      console.log(response.data);
-      let url = response.data.url;
+      console.log(response.data.redirectionUrl);
+      let url = response.data.redirectionUrl;
       res.send(url);
     })
     .catch(function (error) {
@@ -159,4 +159,4 @@ app.get("/get-data", (req, res) => {
   res.send(JSON.parse(localStorage.getItem("jsonData")));
 });
 // start the server listening for requests
-app.listen(config.port || 3000, () => console.log("Server is running..."));
+app.listen(config.port || 3000, () => console.log("Server is running... on "+config.port));
