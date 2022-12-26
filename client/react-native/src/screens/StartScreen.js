@@ -22,10 +22,11 @@ export default function StartScreen({ navigation }) {
       setLoading(false);
     } else {
       try {
-        let url = config.server_url + "/consent/" + number.value;
+        let url = config.server_url + "/init/" + number.value;
         console.log(url);
 
         const response = await fetch(url);
+        console.log("Response fetched from AA");
 
         const json = await response.text();
         console.log(json);

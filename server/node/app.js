@@ -9,6 +9,7 @@ const localStorage = require("localStorage");
 // UTILS
 const createData = require("./util/consent_detail");
 const dataFlow = require("./util/request_data");
+const initFlow = require("./util/init_consent");
 
 // use the express-static middleware
 
@@ -24,24 +25,22 @@ app.get("/", function (req, res) {
   res.send("Server Running");
 });
 
-///// CREATE CONSENT CALL
-
-app.get("/consent/:mobileNumber", (req, res) => {
-  console.log("Serve COnsent");
-  let body = createData(req.params.mobileNumber);
-  console.log(body);
+///// CREATE INIT CALL
+app.get("/init/:mobileNumber", (req, res) => {
+  console.log("Serve Consent");
+  let body = initFlow(req.params.mobileNumber);
   var requestConfig = {
     method: "post",
-    url: config.api_url + "/consents",
+    url: config.api_url + "/init/redirection",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: config.api_key,
+      "Content-Type" : "application/json",
+      "API_KEY" : config.api_key,
     },
     data: body,
   };
-
   axios(requestConfig)
     .then(function (response) {
+      console.log(response.data);
       let url = response.data.url;
       res.send(url);
     })
@@ -50,6 +49,32 @@ app.get("/consent/:mobileNumber", (req, res) => {
       console.log("Error");
     });
 });
+
+//CONSENT CALL UNUSED
+// app.get("/consent/:mobileNumber", (req, res) => {
+//   console.log("Serve COnsent");
+//   let body = createData(req.params.mobileNumber);
+//   console.log(body);
+//   var requestConfig = {
+//     method: "post",
+//     url: config.api_url + "/consents",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: config.api_key,
+//     },
+//     data: body,
+//   };
+
+//   axios(requestConfig)
+//     .then(function (response) {
+//       let url = response.data.url;
+//       res.send(url);
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//       console.log("Error");
+//     });
+// });
 
 ////// CONSENT NOTIFICATION
 
