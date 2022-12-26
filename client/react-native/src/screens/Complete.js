@@ -7,6 +7,8 @@ import { ActivityIndicator, View, Text, ScrollView } from "react-native";
 
 import { BarChart, PieChart } from "react-native-gifted-charts";
 
+const config = require("../../config");
+
 export default function Complete({ navigation }) {
   const [showData, setShowData] = useState(false);
   const [data, setData] = useState({});
@@ -29,9 +31,7 @@ export default function Complete({ navigation }) {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        process.env.REACT_APP_SERVER_URL + "/get-data/"
-      );
+      const response = await fetch(config.server_url + "/get-data/");
       let json = await response.json();
       json = json["Payload"][0]["data"][0]["decryptedFI"];
       let transactions = json["account"]["transactions"]["transaction"];

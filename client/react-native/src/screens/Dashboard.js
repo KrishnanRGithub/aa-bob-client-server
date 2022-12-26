@@ -8,10 +8,11 @@ import {
   Text,
 } from "react-native";
 import WebView from "react-native-webview";
+const config = require("../../config");
 
 export default function Dashboard({ navigation, route }) {
   const webviewRef = useRef(null);
-  const redirect_url = process.env.REACT_APP_SERVER_URL + "/redirect/";
+  const redirect_url = config.server_url + "/redirect/";
 
   const onNavigation = (navState) => {
     if (navState.url.includes(redirect_url)) {

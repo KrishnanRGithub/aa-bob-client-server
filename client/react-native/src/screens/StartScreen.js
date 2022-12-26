@@ -7,6 +7,7 @@ import Paragraph from "../components/Paragraph";
 import TextInput from "../components/TextInput";
 import { ActivityIndicator } from "react-native";
 import { numberValidator } from "../helpers/numberValidator";
+const config = require("../../config");
 
 export default function StartScreen({ navigation }) {
   const [number, setNumber] = useState({ value: "", error: "" });
@@ -21,7 +22,7 @@ export default function StartScreen({ navigation }) {
       setLoading(false);
     } else {
       try {
-        let url = process.env.REACT_APP_SERVER_URL + "/consent/" + number.value;
+        let url = config.server_url + "/consent/" + number.value;
         console.log(url);
 
         const response = await fetch(url);
