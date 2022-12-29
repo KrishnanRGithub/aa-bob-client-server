@@ -18,14 +18,16 @@ export default Login = ({ navigation }) => {
     const [isLoading, setLoading] = useState(false);
   
     const doLogin = async () => {
+      console.log(pin.value)
       setLoading(true);
       const numberError = numberValidator(number.value);
-  
       if (numberError) {
         setNumber({ ...number, error: numberError });
         setLoading(false);
       } else {
         try {
+ 
+          // validate pin so make api call for that
           let url = "http://"+config.server_url + "/init/" + number.value;
           console.log(url);
   
@@ -52,9 +54,6 @@ export default Login = ({ navigation }) => {
     <Background>
       <Logo />
       <Header>Login</Header>
-      <Paragraph>
-        Login with your register mobile number to access your personal finance assistant
-      </Paragraph>
       <TextInput
         label="Mobile number"
         returnKeyType="next"
@@ -66,7 +65,9 @@ export default Login = ({ navigation }) => {
       />
       <PinField
         onChange={pin => setPin({value:pin,error:""})}
-        // value={pin.value}
+        value={pin.value}
+        // description={`4 Digit\nPin`}
+        description={`Enter 4 Digit Pin`}
         keyboardType="number-pad"
       />
       <Button mode="contained" onPress={doLogin}>
@@ -81,11 +82,3 @@ export default Login = ({ navigation }) => {
   );
 };
 
-
-// export default function Login({ navigation }) {
-
-//   return (
-//     <Background>
-//     </Background>
-//   );
-// }

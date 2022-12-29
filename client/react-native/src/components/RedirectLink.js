@@ -19,6 +19,7 @@ const RedirectLink = ({toPage,linkText}) => {
 
 const styles = StyleSheet.create({
   link: {
+    fontStyle: 'italic',
     color: theme.colors.secondary,
   },
 });

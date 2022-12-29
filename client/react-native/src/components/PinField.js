@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { TextInput } from 'react-native-paper'
 import { theme } from '../core/theme'
 
-const PinField = ({ onChange, ...props }) => {
+const PinField = ({ onChange, description, ...props }) => {
   const [numbers, setNumbers] = useState([]);
 
   const handleChange = (number, index) => {
@@ -15,7 +15,7 @@ const PinField = ({ onChange, ...props }) => {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.description}>Enter your 4-digit PIN:</Text>
+        <Text style={styles.description}>{description}</Text>
         <View style={styles.inputContainer}>
             {[...Array(4)].map((_, index) => (
                 <TextInput
@@ -35,22 +35,53 @@ const PinField = ({ onChange, ...props }) => {
 
 const styles = StyleSheet.create({
     container: {
+      width:"100%",
       alignItems: 'flex-start',
     },
     description: {
-      marginBottom: 10,
+      marginBottom: 3,
     },
     inputContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      width: 220,
+      width: "100%",
+      marginBottom: 10,
     },
     input: {
       height: 50,
-      width: 50,
+      width: "23%",
+      backgroundColor:"wheat",
+
       textAlign: 'center',
     },
   });
   
   
 export default PinField;
+
+// const styles = StyleSheet.create({
+//   container: {
+//   flexDirection: 'row',
+//   },
+//   description: {
+//     fontWeight:"500",
+//     flex: 1,
+//     fontSize:15,
+//     marginBottom: 10,
+//     alignSelf: 'center',
+//     textAlign:"center",
+//     justifyContent: 'center',
+//   },
+//   inputContainer: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     width: 220,
+//     marginBottom: 20,
+//   },
+//   input: {
+//     height: 50,
+//     width: 50,
+//     backgroundColor:"wheat",
+//     textAlign: 'center',
+//   },
+// });
