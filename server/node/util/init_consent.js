@@ -8,8 +8,8 @@ const initConsent = (mobileNumber) => {
     vuaId: mobileNumber + "@" + config.aa_id,
     templateType: "PERIODIC",
     trackingId: uuidv4(),
-    redirectionUrl: "https://"+config.hosted_url + "/redirect",
-  });
+    redirectionUrl: "http://"+config.hosted_url + "/redirect",
+  });   
   // console.log(data);
   return data;
 };
