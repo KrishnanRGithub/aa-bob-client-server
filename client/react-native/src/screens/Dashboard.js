@@ -44,6 +44,8 @@ export default function Dashboard({ navigation, route }) {
   );
 }
 
+  
+
 const styles = StyleSheet.create({
   flexContainer: {
     flex: 1,
