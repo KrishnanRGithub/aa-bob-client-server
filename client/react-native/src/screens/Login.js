@@ -9,6 +9,7 @@ import PinField from "../components/PinField";
 import RedirectLink from "../components/RedirectLink";
 import { ActivityIndicator, Linking } from "react-native";
 import { numberValidator } from "../helpers/numberValidator";
+import { Keyboard } from 'react-native';
 
 const config = require("../../config");
 
@@ -17,41 +18,50 @@ export default Login = ({ navigation }) => {
     const [pin, setPin] = useState({ value: "", error: "" });
     const [isLoading, setLoading] = useState(false);
     const [showToast, setShowToast] = useState(false);
+    const [toastMsg, setToastMsg] = useState({message:null, type:null});
 
     const doLogin = async () => {
-      console.log(pin.value)
-      setLoading(true);
-      setShowToast(true);
-
-      setNumber({ ...number, error: "numberError" });
-      return
-      const numberError = numberValidator(number.value);
-      if (numberError) {
-        setNumber({ ...number, error: numberError });
-        setLoading(false);
-      } else {
-        try {
- 
-          // validate pin so make api call for that
-          let url = "http://"+config.server_url + "/init/" + number.value;
-          console.log(url);
-  
-          const response = await fetch(url,  {headers: {
-            'Content-Type': 'application/json'
-          }});
-          console.log("Response fetched from AA");
-  
-          const AaUrl = await response.text();
-          console.log("Fetched Response AaURL : "+AaUrl);
-          // Linking.openURL(AaUrl);
-     
-          // return <Link source={{ uri: AaUrl }} />;
-          navigation.navigate("Dashboard", { param: AaUrl });
-        } catch (error) {
-          console.error(error + " Start Screen");
-        } finally {
+      Keyboard.dismiss();
+      setLoading(true)
+      setShowToast(false)
+      try{
+        if(pin.value.length!=4){
+          setToastMsg({message:"Fill the PIN",type:"error"})
+          setShowToast(true);
           setLoading(false);
         }
+        const numberError = numberValidator(number.value);
+        if (numberError) {
+          setToastMsg({message:"Invalid mobile number",type:"error"})
+          setShowToast(true);
+          setLoading(false);
+        } else {
+            // validate pin so make api call for that
+            let url = "http://"+config.server_url + "/user/login" ;
+            const response = await fetch(url,  {
+              method: "POST", 
+              body: JSON.stringify({
+                    mobile: number.value,
+                    pin: pin.value,
+              }),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+            });
+    
+            let msg = await response.json();
+            setToastMsg({message:msg["msg"],type:msg["type"]})
+            setShowToast(true);
+            setLoading(false);  
+            // navigation.navigate("Dashboard", { param: AaUrl });
+        }
+      } catch (err) {
+        console.error(err);
+        setToastMsg({message:"Unexpected Error",type:"error"})
+        setShowToast(true);
+        setLoading(false);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -80,9 +90,7 @@ export default Login = ({ navigation }) => {
         toPage="Signup"
         linkText="New here ? Click here to signup"
       />
-      {showToast && (
-        <Toast message="This is a success message" type="success" />
-      )}
+      {showToast && (<Toast message= {toastMsg.message} type={toastMsg.type} />)}
       {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
     </Background>
   );

@@ -5,18 +5,13 @@ const router = express.Router()
 
 
 router
-  .route("/")
-  .post(userController.loginUser)
-  .get((req, res, next) => {
-    res.render("user/login");
-  });;
+  .route("/login")
+  .post(userController.loginUser);
+
 
 router
   .route("/signup")
-  .post(userController.createUser)
-  .get((req, res, next) => {
-    res.render("user/signup");
-  });
+  .post(userController.createUser);
 
 router.
   route("/logout")

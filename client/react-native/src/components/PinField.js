@@ -26,6 +26,7 @@ const PinField = ({ onChange, description, ...props }) => {
                 onChangeText={text => handleChange(text, index)}
                 value={numbers[index]}
                 autoFocus={index === 0}
+                secureTextEntry
                 />
             ))}
         </View>

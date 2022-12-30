@@ -11,7 +11,18 @@ const userSchema = new mongoose.Schema({
   },
   photo: {
     type: Buffer,
-    required: false
+    required: false,
+    validate: {
+      validator: function(value) {
+        if(value==null)
+            return true;
+        // Check if the photo is a JPEG or PNG
+        const allowedTypes = ['image/jpeg', 'image/png'];
+        return allowedTypes.includes(value.contentType);
+      },
+      message: 'Invalid photo type. Only JPEG and PNG are allowed.'
+    },
+    maxlength: 500000 // 500KB
   },
   pin: {
     type: String,

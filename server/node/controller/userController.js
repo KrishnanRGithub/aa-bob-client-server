@@ -1,40 +1,36 @@
+const { intarystrtohex } = require("jsrsasign");
 const User = require("../schema/userSchema");
-// const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 exports.createUser = async (req, res, next) => {
-    var email = req.body.email.trim();
-    var password = req.body.password;
-    // var image = "/images/dp.jpg";
-    // if (!req.body.source)  //When creating with google source will be directly set
-    // {
-    //     req.body.source = "WeAuth";
-    //     req.body.image = process.env.DEPLOYMENT_URL+"/images/dp.jpg";
-    //     req.body.firstName = "";
-    //     req.body.lastName = "";
-    // }
-    // if (email && password) {
-    //     var user = await User.findOne({email: email})
-    //     .catch((error) => {
-    //         console.log(error);
-    //         res.status(400).json({status: "Something Went Wrong with DB"});
-    //     })
-
-    //     if(user == null) {
-    //         var data = req.body;
-    //         data.password = await bcrypt.hash(password, 10);
-    //         User.create(data)
-    //           .then(() => {
-    //             return res.redirect("/");
-    //         })
-    //     }
-    //     else {
-    //         // TODO proper error codes User Found
-    //         return res.redirect("/");
-    //     }
-    // }
-    // else {
-    //     return res.redirect("/");
-    // }
+    console.log("New account request")
+    var mobile = req.body.mobile.trim();
+    var pin = req.body.pin;
+    pin = await bcrypt.hash(pin, 10);
+    var user = await User.findOne({mobile: mobile})
+    res.setHeader("Content-Type", "application/json");
+    res.writeHead(200);
+    var response = { "msg":"Account created successfully","type":"success"}
+    if(user == null) {
+        user = new User({
+            mobile: mobile,
+            pin: pin,
+            isLinked: false,
+        });
+        
+        user.save((error) => {
+            if (error) {
+                response["msg"]="Couldnt create account";
+                response["type"]="error";
+                console.log(error);
+            }
+        });
+        
+    }else{
+        response["msg"]="Account exists already";
+        response["type"]="error";
+    }
+    res.end(JSON.stringify(response));
 };
 
 exports.loginUser = async (req, res, next) => {   
