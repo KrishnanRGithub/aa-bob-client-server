@@ -22,6 +22,7 @@ const Toast = ({ message, type }) => {
     }).start();
   };
 
+  
   return (
     <Animated.View
       style={{
