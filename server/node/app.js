@@ -5,11 +5,17 @@ const app = express();
 const config = require("./config");
 var axios = require("axios");
 const localStorage = require("localStorage");
+const database = require("./database")  //function intialised on return directly
 
 // UTILS
 const createData = require("./util/consent_detail");
 const dataFlow = require("./util/request_data");
 const initFlow = require("./util/init_consent");
+
+
+// ROUTERS
+const userRouter = require('./routes/userRouter')
+
 
 // use the express-static middleware
 
@@ -19,6 +25,11 @@ app.use(express.urlencoded());
 // app.use(bodyParser.text({ defaultCharset: "utf-8" }));
 
 app.use(express.static("public"));
+
+
+app.use("/user/", userRouter);
+
+
 
 // define the first route
 app.get("/", function (req, res) {

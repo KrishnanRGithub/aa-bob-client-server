@@ -3,7 +3,7 @@ import Background from "../components/Background";
 import Logo from "../components/Logo";
 import Header from "../components/Header";
 import Button from "../components/Button";
-import Paragraph from "../components/Paragraph";
+import Toast from "../components/Toast";
 import TextInput from "../components/TextInput";
 import PinField from "../components/PinField";
 import RedirectLink from "../components/RedirectLink";
@@ -16,10 +16,15 @@ export default Login = ({ navigation }) => {
     const [number, setNumber] = useState({ value: "", error: "" });
     const [pin, setPin] = useState({ value: "", error: "" });
     const [isLoading, setLoading] = useState(false);
-  
+    const [showToast, setShowToast] = useState(false);
+
     const doLogin = async () => {
       console.log(pin.value)
       setLoading(true);
+      setShowToast(true);
+
+      setNumber({ ...number, error: "numberError" });
+      return
       const numberError = numberValidator(number.value);
       if (numberError) {
         setNumber({ ...number, error: numberError });
@@ -59,8 +64,6 @@ export default Login = ({ navigation }) => {
         returnKeyType="next"
         value={number.value}
         onChangeText={(text) => setNumber({ value: text, error: "" })}
-        error={!!number.error}
-        errorText={number.error}
         keyboardType="number-pad"
       />
       <PinField
@@ -77,6 +80,9 @@ export default Login = ({ navigation }) => {
         toPage="Signup"
         linkText="New here ? Click here to signup"
       />
+      {showToast && (
+        <Toast message="This is a success message" type="success" />
+      )}
       {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
     </Background>
   );

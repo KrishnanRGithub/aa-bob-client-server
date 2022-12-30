@@ -13,10 +13,6 @@ export default function TextInput({ errorText, description, ...props }) {
         mode="outlined"
         {...props}
       />
-      {description && !errorText ? (
-        <Text style={styles.description}>{description}</Text>
-      ) : null}
-      {errorText ? <Text style={styles.error}>{errorText}</Text> : null}
     </View>
   )
 }
