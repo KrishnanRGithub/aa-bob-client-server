@@ -27,7 +27,9 @@ const Toast = ({ message, type }) => {
     <Animated.View
       style={{
         ...styles.container,
-        backgroundColor: type === 'error' ? '#960505' : '#015c28',
+        borderColor: type === 'error' ? '#960505' : '#015c28',
+        borderWidth:3,
+        backgroundColor: type === 'error' ? '#bf0606' : '#027835',
         opacity: fadeAnim,
       }}
     >

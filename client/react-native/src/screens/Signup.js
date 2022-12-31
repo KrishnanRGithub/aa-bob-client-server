@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Background from "../components/Background";
 import Logo from "../components/Logo";
 import Header from "../components/Header";
@@ -10,6 +10,7 @@ import RedirectLink from "../components/RedirectLink";
 import { ActivityIndicator, Linking } from "react-native";
 import { numberValidator } from "../helpers/numberValidator";
 import { Keyboard } from 'react-native';
+import { storeSession,isSessionSet } from "../helpers/sessionHandler";
 
 
 const config = require("../../config");
@@ -21,6 +22,27 @@ export default function Signup({ navigation }) {
     const [isLoading, setLoading] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMsg, setToastMsg] = useState({message:null, type:null});
+    const [renderPage, setRenderPage] = useState(false);
+
+       
+    useEffect(() => {
+      return navigation.addListener("focus",()=>{
+        isSessionSet("user").then((val)=>{
+          if (val){
+             console.log(val)
+             navigation.navigate("StartScreen");
+          }else{
+            setShowToast(false)
+            setNumber("")
+            setLoading(false)
+            setPin(false)
+            setRepin(false)
+            setRenderPage(true)
+          }
+        })
+      })
+    }, [navigation]);
+    
     const doSignup = async () => {
       Keyboard.dismiss();
       setLoading(true)
@@ -78,6 +100,9 @@ export default function Signup({ navigation }) {
 
     };
 
+    if(renderPage==false){
+      return<></>
+    }
   return (
     <Background>
     <Logo />

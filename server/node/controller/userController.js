@@ -18,6 +18,7 @@ const limiterConsecutiveFailsByMobile = new RateLimiterRedis({
   blockDuration: 60 * 120, // Block for 15 minutes
 });
 
+
 exports.createUser = async (req, res, next) => {
     console.log("New account request")
     var mobile = req.body.mobile.trim();
@@ -55,7 +56,7 @@ exports.loginUser = async (req, res, next) => {
     var pin = req.body.pin;
     const rlResMobile = await limiterConsecutiveFailsByMobile.get(mobile);
     console.log(rlResMobile)
-    var response = { "msg":"Logged in successfull","type":"success","auth":true}
+    var response = { "msg":"Logged in successfull","type":"success","auth":true,"user":null}
     var user = await User.findOne({mobile: mobile})
     res.setHeader("Content-Type", "application/json");
     res.writeHead(200);
@@ -68,6 +69,8 @@ exports.loginUser = async (req, res, next) => {
         var result = await bcrypt.compare(pin, user.pin);
         if(result === true) {
             await limiterConsecutiveFailsByMobile.set(mobile,0);
+            response["user"]=user;
+            response["user"].pin=null;
             console.log("Credentials matched")
         }
         else{
