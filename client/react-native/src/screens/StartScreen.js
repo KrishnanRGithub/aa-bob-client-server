@@ -29,6 +29,18 @@ export default function StartScreen({ navigation }) {
   const [renderPage, setRenderPage] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMsg, setToastMsg] = useState({message:null, type:null});
+  
+  const fetchUrlFromAA = async()=>{
+    let url = "http://"+config.server_url + "/init/" + number;
+    console.log(url);
+
+    const response = await fetch(url,  {headers: {
+      'Content-Type': 'application/json'
+    }});
+    console.log("Response fetched from AA");
+    const replyFromAA = await response.json();
+    return replyFromAA
+  }
 
   useEffect(() => {
     return navigation.addListener("focus",()=>{
@@ -50,6 +62,7 @@ export default function StartScreen({ navigation }) {
     })
   }, [navigation]);
 
+
   const getURL = async () => {
     setLoading(true);
     const validNumber = numberValidator(number);
@@ -60,15 +73,7 @@ export default function StartScreen({ navigation }) {
       return;
     }else {
       try {
-        let url = "http://"+config.server_url + "/init/" + number;
-        console.log(url);
-
-        const response = await fetch(url,  {headers: {
-          'Content-Type': 'application/json'
-        }});
-        console.log("Response fetched from AA");
-
-        const reply = await response.json();
+        const reply = await fetchUrlFromAA();
         let sessionVar = await getSession("user")
         sessionVar["trackingId"]=reply.trackingId;
         sessionVar["referenceId"]=reply.referenceId;

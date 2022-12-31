@@ -9,6 +9,7 @@
   "author": "Krishnan",
   "license": "MIT",
   "dependencies": {
+    "@vonage/server-sdk": "^3.0.12",
     "axios": "^0.21.1",
     "base64url": "^3.0.1",
     "bcrypt": "^5.1.0",
@@ -23,6 +24,7 @@
     "mongoose": "^6.8.2",
     "rate-limiter-flexible": "^2.4.1",
     "redis": "^2.7.1",
+    "twilio": "^3.84.0",
     "uuid": "^9.0.0",
     "xml2js": "^0.4.23"
   }
