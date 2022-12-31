@@ -2,16 +2,11 @@ import React from 'react';
 import { Text, TouchableOpacity,StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '../core/theme'
-import { signoutSession } from "../helpers/sessionHandler";
 
 const RedirectLink = ({toPage,linkText}) => {
   const navigation = useNavigation();
 
-  if(toPage=="Logout"){
-    signoutSession().then(()=>{
-      toPage="Login"
-    })
-  }
+ 
   const handlePress = () => {
     navigation.navigate(toPage);
   };

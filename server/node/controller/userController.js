@@ -47,6 +47,7 @@ exports.createUser = async (req, res, next) => {
         response["msg"]="Account exists already";
         response["type"]="error";
     }
+    console.log(response)
     res.end(JSON.stringify(response));
 };
 

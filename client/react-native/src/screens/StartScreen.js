@@ -45,8 +45,10 @@ export default function StartScreen({ navigation }) {
   useEffect(() => {
     return navigation.addListener("focus",()=>{
       getSession("user").then((val)=>{
-        if (val["trackingID"]){
+        console.log("On Page load Session",val)
+        if (val["trackingId"]){
           console.log(val)
+          navigation.navigate("Complete");
         }else if(val){
           console.log(val["mobile"])
           setNumber(val["mobile"])
@@ -75,6 +77,7 @@ export default function StartScreen({ navigation }) {
       try {
         const reply = await fetchUrlFromAA();
         let sessionVar = await getSession("user")
+        console.log(sessionVar)
         sessionVar["trackingId"]=reply.trackingId;
         sessionVar["referenceId"]=reply.referenceId;
         await storeSession("user",sessionVar);

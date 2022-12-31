@@ -30,6 +30,7 @@ export default function Signup({ navigation }) {
         isSessionSet("user").then((val)=>{
           if (val){
              console.log(val)
+             setRenderPage(false)
              navigation.navigate("StartScreen");
           }else{
             setShowToast(false)

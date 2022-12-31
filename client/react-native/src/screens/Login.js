@@ -10,7 +10,7 @@ import RedirectLink from "../components/RedirectLink";
 import { ActivityIndicator, Linking } from "react-native";
 import { numberValidator } from "../helpers/numberValidator";
 import { Keyboard } from 'react-native';
-import { storeSession,isSessionSet, clearSession } from "../helpers/sessionHandler";
+import { storeSession,isSessionSet, getSession } from "../helpers/sessionHandler";
 
 const config = require("../../config");
 
@@ -33,6 +33,7 @@ export default Login = ({ navigation }) => {
         isSessionSet("user").then((val)=>{
           if (val){
              console.log(val)
+             setRenderPage(false)
              navigation.navigate("StartScreen");
           }else{
             setShowToast(false)
@@ -83,8 +84,10 @@ export default Login = ({ navigation }) => {
         if(msg["auth"])
         {
             if(await storeSession("user",msg["user"]))
+            {   let temp =await getSession("user") 
+                console.log("Stored Session : "+temp)
                 navigation.navigate("StartScreen");
-            else{
+            }else{
               setToastMsg({message:"Couldn't set session",type:"error"})
             }
         }        
@@ -130,4 +133,3 @@ export default Login = ({ navigation }) => {
     </Background>
   );
 };
-

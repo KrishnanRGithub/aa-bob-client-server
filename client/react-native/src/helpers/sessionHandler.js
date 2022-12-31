@@ -13,14 +13,18 @@ export async function storeSession(key,value){
 }
 
 export async function getSession(key){
-    try {
-      const value = await AsyncStorage.getItem(key)
-      return value != null ? JSON.parse(value) : null;
+   let value=null 
+   try {
+       value = await AsyncStorage.getItem(key)
+      if(value==null)
+        return null
     } catch(e) {
         console.log("Error in fetching key");
-      // error reading value
+        return null
+        // error reading value
+
     }
-    return null;
+    return JSON.parse(value);
 }
 
 export async function signoutSession(){

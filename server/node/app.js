@@ -57,17 +57,20 @@ app.get("/init/:mobileNumber", (req, res) => {
       let url = response.data.redirectionUrl;
       let reply ={
         "url":url,
-        "trackingId":trackingID,
+        "trackingId":trackingId,
         "referenceId":referenceId
       }
+      console.log(reply)
       updateAAID(mobile,trackingId,referenceId).then(()=>{
-        res.end(JSON.stringify(reply));
+        console.log("")
       })      
+      res.end(JSON.stringify(reply));
+
     })
     .catch(function (error) {
       console.log(error);
       console.log("Error");
-      res.end(JSON.stringify({"url":null,"trackingID":null,"referenceID":null}));
+      res.end(JSON.stringify({"url":null,"trackingId":null,"referenceId":null}));
     });
 
 });
