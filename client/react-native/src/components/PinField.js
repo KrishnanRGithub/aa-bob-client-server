@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { TextInput } from 'react-native-paper'
 import { theme } from '../core/theme'
 
 const PinField = ({ onChange, description, ...props }) => {
   const [numbers, setNumbers] = useState([]);
+
+  // useEffect(() => {
+  //     setNumbers([]);
+  // }, [value]);
+
 
   const handleChange = (number, index) => {
     const newNumbers = [...numbers];

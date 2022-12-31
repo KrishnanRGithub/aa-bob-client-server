@@ -21,14 +21,13 @@ export default Login = ({ navigation }) => {
   //      console.log(val)
   //   }})
 
-    const [number, setNumber] = useState({ value: "", error: "" });
-    const [pin, setPin] = useState({ value: "", error: "" });
+    const [number, setNumber] = useState("");
+    const [pin, setPin] = useState("");
     const [isLoading, setLoading] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMsg, setToastMsg] = useState({message:null, type:null});
     const [renderPage, setRenderPage] = useState(false);
-
-    
+  
     useEffect(() => {
       return navigation.addListener("focus",()=>{
         isSessionSet("user").then((val)=>{
@@ -39,7 +38,7 @@ export default Login = ({ navigation }) => {
             setShowToast(false)
             setNumber("")
             setLoading(false)
-            setPin(false)
+            setPin("")
             setRenderPage(true)
           }
         })
@@ -53,14 +52,14 @@ export default Login = ({ navigation }) => {
       setLoading(true)
       setShowToast(false)
       try{
-        const validNumber = numberValidator(number.value);
+        const validNumber = numberValidator(number);
         if (!validNumber) {
           setToastMsg({message:"Invalid mobile number",type:"error"})
           setShowToast(true);
           setLoading(false);
           return;
         }
-        if(pin.value.length!=4){
+        if(pin.length!=4){
           setToastMsg({message:"Fill the PIN",type:"error"})
           setShowToast(true);
           setLoading(false);
@@ -71,8 +70,8 @@ export default Login = ({ navigation }) => {
         const response = await fetch(url,  {
           method: "POST", 
           body: JSON.stringify({
-                mobile: number.value,
-                pin: pin.value,
+                mobile: number,
+                pin: pin,
           }),
           headers: {
               'Content-Type': 'application/json'
@@ -108,13 +107,13 @@ export default Login = ({ navigation }) => {
       <TextInput
         label="Mobile number"
         returnKeyType="next"
-        value={number.value}
-        onChangeText={(text) => setNumber({ value: text, error: "" })}
+        value={number}
+        onChangeText={(text) => setNumber(text)}
         keyboardType="number-pad"
       />
       <PinField
-        onChange={pin => setPin({value:pin,error:""})}
-        value={pin.value}
+        onChange={text => setPin(text)}
+        value={pin}
         // description={`4 Digit\nPin`}
         description={`Enter 4 Digit Pin`}
         keyboardType="number-pad"

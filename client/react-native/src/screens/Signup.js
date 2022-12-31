@@ -16,9 +16,9 @@ import { storeSession,isSessionSet } from "../helpers/sessionHandler";
 const config = require("../../config");
 
 export default function Signup({ navigation }) {
-    const [number, setNumber] = useState({ value: "", error: "" });
-    const [pin, setPin] = useState({ value: "", error: "" });
-    const [repin, setRepin] = useState({ value: "", error: "" });
+    const [number, setNumber] = useState("");
+    const [pin, setPin] = useState("");
+    const [repin, setRepin] = useState("");
     const [isLoading, setLoading] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMsg, setToastMsg] = useState({message:null, type:null});
@@ -35,8 +35,8 @@ export default function Signup({ navigation }) {
             setShowToast(false)
             setNumber("")
             setLoading(false)
-            setPin(false)
-            setRepin(false)
+            setPin("")
+            setRepin("")
             setRenderPage(true)
           }
         })
@@ -49,7 +49,7 @@ export default function Signup({ navigation }) {
       setShowToast(false)
       try{
 
-        const validNumber = numberValidator(number.value);
+        const validNumber = numberValidator(number);
         if (!validNumber) {
           setToastMsg({message:"Invalid mobile number",type:"error"})
           setShowToast(true);
@@ -57,13 +57,13 @@ export default function Signup({ navigation }) {
           return;
         } 
 
-        if(pin.value.length!=4){
+        if(pin.length!=4){
           setToastMsg({message:"Fill the PIN",type:"error"})
           setShowToast(true);
           setLoading(false);
           return;
         }
-        if(pin.value!==repin.value){
+        if(pin!==repin){
           setToastMsg({message:"Pin doesnt match",type:"error"})
           setShowToast(true);
           setLoading(false);
@@ -75,8 +75,8 @@ export default function Signup({ navigation }) {
         const response = await fetch(url,  {
           method: "POST", 
           body: JSON.stringify({
-                mobile: number.value,
-                pin: pin.value,
+                mobile: number,
+                pin: pin,
           }),
           headers: {
               'Content-Type': 'application/json'
@@ -87,7 +87,7 @@ export default function Signup({ navigation }) {
         setToastMsg({message:msg["msg"],type:msg["type"]})
         setShowToast(true);
         setLoading(false);  
-        // navigation.navigate("Dashboard", { param: AaUrl });
+        navigation.navigate("Login");
         
       } catch (err) {
         console.error(err);
@@ -110,21 +110,21 @@ export default function Signup({ navigation }) {
     <TextInput
       label="Mobile number"
       returnKeyType="next"
-      value={number.value}
-      onChangeText={(text) => setNumber({ value: text, error: "" })}
+      value={number}
+      onChangeText={(text) => setNumber(text)}
       error={!!number.error}
       errorText={number.error}
       keyboardType="number-pad"
     />
     <PinField
-      onChange={pin => setPin({value:pin,error:""})}
-      value={pin.value}
+      onChange={text => setPin(text)}
+      value={pin}
       description={`Set 4 Digit Pin`}
       keyboardType="number-pad"
     />
     <PinField
-      onChange={repin => setRepin({value:repin,error:""})}
-      value={repin.value}
+      onChange={text => setRepin(text)}
+      value={repin}
       description={`Re-Enter 4 Digit Pin`}
       keyboardType="number-pad"
     />

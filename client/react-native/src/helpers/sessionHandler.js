@@ -23,6 +23,16 @@ export async function getSession(key){
     return null;
 }
 
+export async function signoutSession(){
+  try {
+    await AsyncStorage.removeItem("user");
+  } catch (e) {
+      console.log("Error in clearing session")
+      return false;
+  }
+  return true;
+}
+
 export async function clearSession(key){
     try {
       await AsyncStorage.removeItem(key);
