@@ -11,7 +11,7 @@ const database = require("./database")  //function intialised on return directly
 const createData = require("./util/consent_detail");
 const dataFlow = require("./util/request_data");
 const initFlow = require("./util/init_consent");
-
+const {updateAAID} = require("./util/db_fucntion")
 
 // ROUTERS
 const userRouter = require('./routes/userRouter')
@@ -39,7 +39,8 @@ app.get("/", function (req, res) {
 ///// CREATE INIT CALL
 app.get("/init/:mobileNumber", (req, res) => {
   console.log("Serve Consent");
-  let body = initFlow(req.params.mobileNumber);
+  let mobile = req.params.mobileNumber
+  let body = initFlow(mobile);
   var requestConfig = {
     method: "post",
     url: config.api_url + "/init/redirection",
@@ -51,14 +52,24 @@ app.get("/init/:mobileNumber", (req, res) => {
   };
   axios(requestConfig)
     .then(function (response) {
-      console.log(response.data.redirectionUrl);
+      let trackingId=response.data.trackingId
+      let referenceId=response.data.referenceId
       let url = response.data.redirectionUrl;
-      res.send(url);
+      let reply ={
+        "url":url,
+        "trackingId":trackingID,
+        "referenceId":referenceId
+      }
+      updateAAID(mobile,trackingId,referenceId).then(()=>{
+        res.end(JSON.stringify(reply));
+      })      
     })
     .catch(function (error) {
       console.log(error);
       console.log("Error");
+      res.end(JSON.stringify({"url":null,"trackingID":null,"referenceID":null}));
     });
+
 });
 
 //CONSENT CALL UNUSED

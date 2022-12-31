@@ -10,7 +10,7 @@ import { numberValidator } from "../helpers/numberValidator";
 import { getSession } from "../helpers/sessionHandler";
 import { StyleSheet } from 'react-native';
 import RedirectLink from "../components/RedirectLink";
-
+import { storeSession } from "../helpers/sessionHandler";
 const config = require("../../config");
 
 const styles = StyleSheet.create({
@@ -68,12 +68,12 @@ export default function StartScreen({ navigation }) {
         }});
         console.log("Response fetched from AA");
 
-        const AaUrl = await response.text();
-        console.log("Fetched Response AaURL : "+AaUrl);
-        // Linking.openURL(AaUrl);
-   
-        // return <Link source={{ uri: AaUrl }} />;
-        navigation.navigate("Dashboard", { param: AaUrl });
+        const reply = await response.json();
+        let sessionVar = await getSession("user")
+        sessionVar["trackingId"]=reply.trackingId;
+        sessionVar["referenceId"]=reply.referenceId;
+        await storeSession("user",sessionVar);
+        navigation.navigate("Dashboard", { param: reply["url"] });
       } catch (error) {
         console.error(error + " Start Screen");
       } finally {

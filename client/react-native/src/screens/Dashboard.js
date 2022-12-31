@@ -12,9 +12,10 @@ const config = require("../../config");
 
 export default function Dashboard({ navigation, route }) {
   const webviewRef = useRef(null);
-  const redirect_url = config.server_url + "/redirect/";
+  const redirect_url = config.server_url + "/redirect";
 
   const onNavigation = (navState) => {
+    console.log(navState)
     if (navState.url.includes(redirect_url)) {
       navigation.navigate("Complete");
     }
@@ -49,8 +50,13 @@ export default function Dashboard({ navigation, route }) {
 const styles = StyleSheet.create({
   flexContainer: {
     flex: 1,
+    backgroundColor:"#f8fafc"
+    // AA background color
   },
   margin: {
+    backgroundColor:"#f8fafc",
     marginTop: 50,
+    marginLeft:15,
+    marginRight:15
   },
 });

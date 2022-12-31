@@ -95,6 +95,7 @@ exports.loginUser = async (req, res, next) => {
 
 
 
+
 exports.updateUserDetails = async (req, res, next) => {
     if (!req.session.user) return res.redirect("/");
     var email = req.session.user.email.trim();
