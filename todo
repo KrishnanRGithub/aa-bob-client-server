@@ -1,0 +1,2 @@
+Redis server to manage otp thing in server sudo apt-get install redis-server
+redis-cli flushall

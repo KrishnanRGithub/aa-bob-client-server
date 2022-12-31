@@ -1,4 +1,3 @@
-const { intarystrtohex } = require("jsrsasign");
 const User = require("../schema/userSchema");
 const bcrypt = require("bcrypt");
 const redis = require('redis');
@@ -55,31 +54,38 @@ exports.loginUser = async (req, res, next) => {
     var mobile = req.body.mobile.trim();
     var pin = req.body.pin;
     const rlResMobile = await limiterConsecutiveFailsByMobile.get(mobile);
-    if (rlResMobile !== null && rlResMobile.consumedPoints > maxConsecutiveFailsByMobile) {
-        const retrySecs = Math.round(rlResMobile.msBeforeNext / 1000) || 1;
-        response["msg"]="Too many Requests";
-        response["type"]="error";
-        response["auth"]=false;
-        res.end(JSON.stringify(response));
-    }
+    console.log(rlResMobile)
+    var response = { "msg":"Logged in successfull","type":"success","auth":true}
     var user = await User.findOne({mobile: mobile})
     res.setHeader("Content-Type", "application/json");
     res.writeHead(200);
-    var response = { "msg":"Logged in successfull","type":"success","auth":true}
     if(user == null) {
         response["msg"]="Account doesnt exist";
         response["type"]="error";
         response["auth"]=false;
+
     }else{
         var result = await bcrypt.compare(pin, user.pin);
         if(result === true) {
+            await limiterConsecutiveFailsByMobile.set(mobile,0);
             console.log("Credentials matched")
         }
         else{
-            response["msg"]="Invalid Credentials";
-            response["type"]="error";
             response["auth"]=false;
+            if (rlResMobile !== null && rlResMobile.consumedPoints > maxConsecutiveFailsByMobile) {
+                response["msg"]="Too many requests try later";
+                response["type"]="error";
+           
+            }else{
+                response["msg"]="Incorrect PIN "+(maxConsecutiveFailsByMobile-rlResMobile.consumedPoints)+" try left";
+                response["type"]="error";
+                await limiterConsecutiveFailsByMobile.consume(mobile).catch((err)=>{
+                    console.log("Error when the limit is exactly what was set, need to fix")
+                });    
+            }
+
         }
+
     }
     res.end(JSON.stringify(response));
 }

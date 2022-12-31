@@ -19,7 +19,6 @@ export default Login = ({ navigation }) => {
     const [isLoading, setLoading] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMsg, setToastMsg] = useState({message:null, type:null});
-
     const doLogin = async () => {
       Keyboard.dismiss();
       setLoading(true)
@@ -30,11 +29,13 @@ export default Login = ({ navigation }) => {
           setToastMsg({message:"Invalid mobile number",type:"error"})
           setShowToast(true);
           setLoading(false);
+          return;
         }
         if(pin.value.length!=4){
           setToastMsg({message:"Fill the PIN",type:"error"})
           setShowToast(true);
           setLoading(false);
+          return;
         }
         // validate pin so make api call for that
         let url = "http://"+config.server_url + "/user/login" ;
@@ -51,17 +52,14 @@ export default Login = ({ navigation }) => {
     
         let msg = await response.json();
         setToastMsg({message:msg["msg"],type:msg["type"]})
-        setShowToast(true);
-        setLoading(false);  
         if(msg["auth"])
           navigation.navigate("StartScreen");
         
       } catch (err) {
         console.error(err);
         setToastMsg({message:"Unexpected Error",type:"error"})
-        setShowToast(true);
-        setLoading(false);
       } finally {
+        setShowToast(true);
         setLoading(false);
       }
     };
