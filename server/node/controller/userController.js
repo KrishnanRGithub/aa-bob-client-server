@@ -1,6 +1,23 @@
 const { intarystrtohex } = require("jsrsasign");
 const User = require("../schema/userSchema");
 const bcrypt = require("bcrypt");
+const redis = require('redis');
+const { RateLimiterRedis } = require('rate-limiter-flexible');
+// You may also use Mongo, Memory or any other limiter type
+
+const redisClient = redis.createClient({
+  enable_offline_queue: false,
+});
+
+const maxConsecutiveFailsByMobile = 5;
+
+const limiterConsecutiveFailsByMobile = new RateLimiterRedis({
+  redis: redisClient,
+  keyPrefix: 'login_fail_consecutive_mobile',
+  points: maxConsecutiveFailsByMobile,
+  duration: 60 * 60 * 3, // Store number for three hours since first fail
+  blockDuration: 60 * 120, // Block for 15 minutes
+});
 
 exports.createUser = async (req, res, next) => {
     console.log("New account request")
@@ -34,30 +51,37 @@ exports.createUser = async (req, res, next) => {
 };
 
 exports.loginUser = async (req, res, next) => {   
-    var email = req.body.email.trim();
-    var password = req.body.password;
-    // if(email && password) {
-    //     var user = await User.findOne({ email: email })
-    //     .catch((error) => {
-    //         console.log(error);
-    //         return res.redirect("/");
-    //     })
-
-    //     if (user != null) {
-    //         // console.log(user);
-    //         var result = await bcrypt.compare(password, user.password);
-    //         if(result === true) {
-    //             req.session.user = user;
-    //             return res.redirect("/profile");
-    //         }
-    //     }
-    //     return res.redirect("/");
-    // //   res.status(200).json({status: "User : Invalid Credentials"});
-      
-    // }
-    return res.redirect("/");
-
-    // res.status(200).render("user/profile");
+    console.log("Login request")
+    var mobile = req.body.mobile.trim();
+    var pin = req.body.pin;
+    const rlResMobile = await limiterConsecutiveFailsByMobile.get(mobile);
+    if (rlResMobile !== null && rlResMobile.consumedPoints > maxConsecutiveFailsByMobile) {
+        const retrySecs = Math.round(rlResMobile.msBeforeNext / 1000) || 1;
+        response["msg"]="Too many Requests";
+        response["type"]="error";
+        response["auth"]=false;
+        res.end(JSON.stringify(response));
+    }
+    var user = await User.findOne({mobile: mobile})
+    res.setHeader("Content-Type", "application/json");
+    res.writeHead(200);
+    var response = { "msg":"Logged in successfull","type":"success","auth":true}
+    if(user == null) {
+        response["msg"]="Account doesnt exist";
+        response["type"]="error";
+        response["auth"]=false;
+    }else{
+        var result = await bcrypt.compare(pin, user.pin);
+        if(result === true) {
+            console.log("Credentials matched")
+        }
+        else{
+            response["msg"]="Invalid Credentials";
+            response["type"]="error";
+            response["auth"]=false;
+        }
+    }
+    res.end(JSON.stringify(response));
 }
 
 

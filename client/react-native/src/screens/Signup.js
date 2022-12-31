@@ -26,6 +26,15 @@ export default function Signup({ navigation }) {
       setLoading(true)
       setShowToast(false)
       try{
+
+        const validNumber = numberValidator(number.value);
+        if (!validNumber) {
+          setToastMsg({message:"Invalid mobile number",type:"error"})
+          setShowToast(true);
+          setLoading(false);
+          return;
+        } 
+
         if(pin.value.length!=4){
           setToastMsg({message:"Fill the PIN",type:"error"})
           setShowToast(true);
@@ -38,13 +47,7 @@ export default function Signup({ navigation }) {
           setLoading(false);
           return;
         }
-        const numberError = numberValidator(number.value);
-        if (numberError) {
-          setToastMsg({message:"Invalid mobile number",type:"error"})
-          setShowToast(true);
-          setLoading(false);
-          return;
-        } 
+       
         // validate pin so make api call for that
         let url = "http://"+config.server_url + "/user/signup" ;
         const response = await fetch(url,  {

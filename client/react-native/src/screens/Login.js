@@ -25,36 +25,37 @@ export default Login = ({ navigation }) => {
       setLoading(true)
       setShowToast(false)
       try{
+        const validNumber = numberValidator(number.value);
+        if (!validNumber) {
+          setToastMsg({message:"Invalid mobile number",type:"error"})
+          setShowToast(true);
+          setLoading(false);
+        }
         if(pin.value.length!=4){
           setToastMsg({message:"Fill the PIN",type:"error"})
           setShowToast(true);
           setLoading(false);
         }
-        const numberError = numberValidator(number.value);
-        if (numberError) {
-          setToastMsg({message:"Invalid mobile number",type:"error"})
-          setShowToast(true);
-          setLoading(false);
-        } else {
-            // validate pin so make api call for that
-            let url = "http://"+config.server_url + "/user/login" ;
-            const response = await fetch(url,  {
-              method: "POST", 
-              body: JSON.stringify({
-                    mobile: number.value,
-                    pin: pin.value,
-              }),
-              headers: {
-                  'Content-Type': 'application/json'
-              }
-            });
+        // validate pin so make api call for that
+        let url = "http://"+config.server_url + "/user/login" ;
+        const response = await fetch(url,  {
+          method: "POST", 
+          body: JSON.stringify({
+                mobile: number.value,
+                pin: pin.value,
+          }),
+          headers: {
+              'Content-Type': 'application/json'
+          }
+        });
     
-            let msg = await response.json();
-            setToastMsg({message:msg["msg"],type:msg["type"]})
-            setShowToast(true);
-            setLoading(false);  
-            // navigation.navigate("Dashboard", { param: AaUrl });
-        }
+        let msg = await response.json();
+        setToastMsg({message:msg["msg"],type:msg["type"]})
+        setShowToast(true);
+        setLoading(false);  
+        if(msg["auth"])
+          navigation.navigate("StartScreen");
+        
       } catch (err) {
         console.error(err);
         setToastMsg({message:"Unexpected Error",type:"error"})

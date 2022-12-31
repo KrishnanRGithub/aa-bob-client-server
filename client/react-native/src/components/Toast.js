@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 
 const Toast = ({ message, type }) => {
@@ -35,6 +35,49 @@ const Toast = ({ message, type }) => {
     </Animated.View>
   );
 };
+
+
+
+
+
+// const Toast = ({ message, type }) => {
+//   const [fadeAnim] = useState(new Animated.Value(0));
+//   const messageRef = useRef(message);
+
+//   useEffect(() => {
+//     Animated.timing(fadeAnim, {
+//       toValue: 1,
+//       duration: 500,
+//       easing: Easing.linear,
+//       useNativeDriver: true,
+//     }).start();
+
+//     const timeoutId = setTimeout(() => {
+//       Animated.timing(fadeAnim, {
+//         toValue: 0,
+//         duration: 500,
+//         easing: Easing.linear,
+//         useNativeDriver: true,
+//       }).start();
+//     }, 3000);
+
+//     return () => {
+//       clearTimeout(timeoutId);
+//     };
+//   }, [messageRef.current]);
+
+//   return (
+//     <Animated.View
+//       style={{
+//         ...styles.container,
+//        backgroundColor: type === 'error' ? '#960505' : '#015c28',
+//           opacity: fadeAnim,
+//       }}
+//     >
+//       <Text style={styles.text}>{message}</Text>
+//     </Animated.View>
+//   );
+// };
 
 const styles = StyleSheet.create({
   container: {
