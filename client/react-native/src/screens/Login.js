@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Background from "../components/Background";
 import Logo from "../components/Logo";
 import Header from "../components/Header";
@@ -10,15 +10,44 @@ import RedirectLink from "../components/RedirectLink";
 import { ActivityIndicator, Linking } from "react-native";
 import { numberValidator } from "../helpers/numberValidator";
 import { Keyboard } from 'react-native';
+import { storeSession,isSessionSet, clearSession } from "../helpers/sessionHandler";
 
 const config = require("../../config");
 
 export default Login = ({ navigation }) => {
+
+  // clearSession("user").then((val)=>{
+  //   if (val){
+  //      console.log(val)
+  //   }})
+
     const [number, setNumber] = useState({ value: "", error: "" });
     const [pin, setPin] = useState({ value: "", error: "" });
     const [isLoading, setLoading] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMsg, setToastMsg] = useState({message:null, type:null});
+    const [renderPage, setRenderPage] = useState(false);
+
+    
+    useEffect(() => {
+      return navigation.addListener("focus",()=>{
+        isSessionSet("user").then((val)=>{
+          if (val){
+             console.log(val)
+             navigation.navigate("StartScreen");
+          }else{
+            setShowToast(false)
+            setNumber("")
+            setLoading(false)
+            setPin(false)
+            setRenderPage(true)
+          }
+        })
+      })
+    }, [navigation]);
+    
+    
+    
     const doLogin = async () => {
       Keyboard.dismiss();
       setLoading(true)
@@ -53,8 +82,13 @@ export default Login = ({ navigation }) => {
         let msg = await response.json();
         setToastMsg({message:msg["msg"],type:msg["type"]})
         if(msg["auth"])
-          navigation.navigate("StartScreen");
-        
+        {
+            if(await storeSession("user",msg["user"]))
+                navigation.navigate("StartScreen");
+            else{
+              setToastMsg({message:"Couldn't set session",type:"error"})
+            }
+        }        
       } catch (err) {
         console.error(err);
         setToastMsg({message:"Unexpected Error",type:"error"})
@@ -63,6 +97,9 @@ export default Login = ({ navigation }) => {
         setLoading(false);
       }
     };
+    if(renderPage==false){
+      return<></>
+    }
 
   return (
     <Background>
