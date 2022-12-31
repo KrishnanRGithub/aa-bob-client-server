@@ -97,28 +97,4 @@ exports.loginUser = async (req, res, next) => {
 
 
 
-exports.updateUserDetails = async (req, res, next) => {
-    if (!req.session.user) return res.redirect("/");
-    var email = req.session.user.email.trim();
-    var firstName = req.body.firstName.trim();
-    var lastName = req.body.lastName.trim();
-    var image = req.body.image;
-    if (email) {
-        var user = await User.updateOne(  {email : email}, { $set: { firstName:firstName,lastName:lastName,image:image } }, {
-            new: true,
-            runValidators: true,
-            }).catch((error) => {
-                console.log(error);
-                res.status(400).json({status: "Something Went Wrong with DB"});
-            }).catch(() => {
-                res.status(400).json({status: "Image Size too Large"});
-
-            })
-        req.session.user.firstName = firstName;
-        req.session.user.lastName = lastName;
-        req.session.user.image = image;
-
-    }
-    return res.redirect("/profile");
-}
 

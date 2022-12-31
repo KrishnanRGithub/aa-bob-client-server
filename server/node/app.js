@@ -11,7 +11,7 @@ const database = require("./database")  //function intialised on return directly
 const createData = require("./util/consent_detail");
 const dataFlow = require("./util/request_data");
 const initFlow = require("./util/init_consent");
-const {updateAAID} = require("./util/db_fucntion")
+const {updateAAID,userDetails} = require("./util/db_fucntion")
 
 // ROUTERS
 const userRouter = require('./routes/userRouter')
@@ -37,7 +37,7 @@ app.get("/", function (req, res) {
 });
 
 ///// CREATE INIT CALL
-app.get("/init/:mobileNumber", (req, res) => {
+app.get("/init/:mobileNumber", async (req, res) => {
   console.log("Serve Consent");
   let mobile = req.params.mobileNumber
   let body = initFlow(mobile);
@@ -61,11 +61,8 @@ app.get("/init/:mobileNumber", (req, res) => {
         "referenceId":referenceId
       }
       console.log(reply)
-      updateAAID(mobile,trackingId,referenceId).then(()=>{
-        console.log("")
-      })      
+      updateAAID(mobile,trackingId,referenceId)
       res.end(JSON.stringify(reply));
-
     })
     .catch(function (error) {
       console.log(error);
@@ -75,31 +72,37 @@ app.get("/init/:mobileNumber", (req, res) => {
 
 });
 
-//CONSENT CALL UNUSED
-// app.get("/consent/:mobileNumber", (req, res) => {
-//   console.log("Serve COnsent");
-//   let body = createData(req.params.mobileNumber);
-//   console.log(body);
-//   var requestConfig = {
-//     method: "post",
-//     url: config.api_url + "/consents",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: config.api_key,
-//     },
-//     data: body,
-//   };
+app.get("/consent/status/:mobileNumber", async (req, res) => {
+  
+  let mobile = req.params.mobileNumber
+  let user = await userDetails(mobile)
+  if(!user.trackingId){
+    res.end(JSON.stringify({"status":"NO_TRACKING_ID"}));
+  }
+  var requestConfig = {
+    method: "get",
+    url: config.api_url + "/consent/status?referenceId="+user.referenceId+"&trackingId="+user.trackingId,
+    headers: {
+      "Content-Type": "application/json",
+      "API_KEY" : config.api_key,
+    }
+   };
 
-//   axios(requestConfig)
-//     .then(function (response) {
-//       let url = response.data.url;
-//       res.send(url);
-//     })
-//     .catch(function (error) {
-//       console.log(error);
-//       console.log("Error");
-//     });
-// });
+  axios(requestConfig)
+    .then(function (response) {
+      let status = response.data.status;
+      console.log(status)
+      // "INITIATED" "PROCESSING" "COMPLETED" "FAILED" "EXPIRED"
+      // if(status!="COMPLETED"){
+      //    updateAAID(mobile,null,null)
+      // }
+      res.end(JSON.stringify({"status":status}));
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.end(JSON.stringify({"status":"ERROR"}));
+    });
+});
 
 ////// CONSENT NOTIFICATION
 

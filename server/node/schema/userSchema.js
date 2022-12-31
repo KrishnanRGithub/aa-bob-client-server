@@ -33,11 +33,13 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: false
   },
-  trackingID: {
+  trackingId: {
     type: String,
+    default:null
   },
-  referenceID: {
+  referenceId: {
     type: String,
+    default:null
   }
 });
 

@@ -7,10 +7,9 @@ import Paragraph from "../components/Paragraph";
 import TextInput from "../components/TextInput";
 import { ActivityIndicator } from "react-native";
 import { numberValidator } from "../helpers/numberValidator";
-import { getSession } from "../helpers/sessionHandler";
 import { StyleSheet } from 'react-native';
 import RedirectLink from "../components/RedirectLink";
-import { storeSession } from "../helpers/sessionHandler";
+import { storeSession,getSession,clearSession } from "../helpers/sessionHandler";
 const config = require("../../config");
 
 const styles = StyleSheet.create({
@@ -24,6 +23,9 @@ const styles = StyleSheet.create({
 // open your gateway
 
 export default function StartScreen({ navigation }) {
+  // clearSession("user").then(()=>{
+  //   pass=1
+  // })
   const [number, setNumber] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [renderPage, setRenderPage] = useState(false);
@@ -37,7 +39,18 @@ export default function StartScreen({ navigation }) {
     const response = await fetch(url,  {headers: {
       'Content-Type': 'application/json'
     }});
-    console.log("Response fetched from AA");
+    // console.log("Response fetched from AA");
+    const replyFromAA = await response.json();
+    return replyFromAA
+  }
+
+  const consentStatus = async(mobileNum)=>{
+    let url = "http://"+config.server_url + "/consent/status/" + mobileNum;
+    console.log(url)
+    const response = await fetch(url,  {headers: {
+      'Content-Type': 'application/json'
+    }});
+    // console.log("Consent status fetched from AA");
     const replyFromAA = await response.json();
     return replyFromAA
   }
@@ -47,8 +60,22 @@ export default function StartScreen({ navigation }) {
       getSession("user").then((val)=>{
         console.log("On Page load Session",val)
         if (val["trackingId"]){
+          consentStatus(val["mobile"]).then((status)=>{
+            console.log("Mobile consent status :"+status)
+            if(status.status=="COMPLETED")
+            {
+              navigation.navigate("Complete");
+              setRenderPage(false)
+            }
+            else{
+              console.log(val["mobile"])
+              setNumber(val["mobile"])
+              setRenderPage(true)    
+            }
+          }).catch(()=>{
+            console.log("Error in checking the status of AA")
+          })
           console.log(val)
-          navigation.navigate("Complete");
         }else if(val){
           console.log(val["mobile"])
           setNumber(val["mobile"])
