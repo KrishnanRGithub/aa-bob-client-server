@@ -106,8 +106,8 @@ app.get("/consent/status/:mobileNumber", async (req, res) => {
     });
 });
 
-//Getting consent status
-app.get("/data/:mobileNumber", async (req, res) => {
+//Getting user data from FIP 
+app.get("/data/fi/:mobileNumber", async (req, res) => {
   
   let mobile = req.params.mobileNumber
   let user = await idDetailsOfUser(mobile)
@@ -135,6 +135,35 @@ app.get("/data/:mobileNumber", async (req, res) => {
 
 });
 
+
+//Getting user data from AA 
+app.get("/data/aa/:mobileNumber", async (req, res) => {
+  
+  let mobile = req.params.mobileNumber
+  let user = await idDetailsOfUser(mobile)
+  if(!user.trackingId){
+    res.end(JSON.stringify({"status":"NO_TRACKING_ID"}));
+  }
+  var requestConfig = {
+    method: "get",
+    url: config.api_url + "/consent/analytics/fetch?referenceId="+user.referenceId+"&trackingId="+user.trackingId,
+    headers: {
+      "Content-Type": "application/json",
+      "API_KEY" : config.api_key,
+    }
+   };
+
+  axios(requestConfig)
+    .then(function (response) {
+      console.log(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.end(JSON.stringify({"status":"ERROR"}));
+    });
+    res.end(JSON.stringify({"status":"Check server for fetched data details"}));
+
+});
 
 app.post("/redirect", (req, res) => {
   console.log("In redirect");
