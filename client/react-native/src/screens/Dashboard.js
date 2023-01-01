@@ -16,7 +16,7 @@ export default function Dashboard({ navigation, route }) {
 
   const onNavigation = (navState) => {
     console.log(navState)
-    if (navState.url.includes(base_url)) {
+    if (navState.url.includes(redirect_url)) {
       navigation.navigate("Complete");
     }
   };

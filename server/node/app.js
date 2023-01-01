@@ -4,17 +4,15 @@ const cors = require("cors");
 const app = express();
 const config = require("./config");
 var axios = require("axios");
-const localStorage = require("localStorage");
 const database = require("./database")  //function intialised on return directly
 
 // UTILS
-const createData = require("./util/consent_detail");
-const dataFlow = require("./util/request_data");
 const initFlow = require("./util/init_consent");
 const {updateAAID,userDetails,idDetailsOfUser} = require("./util/db_fucntion")
 
 // ROUTERS
-const userRouter = require('./routes/userRouter')
+const userRouter = require('./routes/userRouter');
+const {processUserDataAA,processUserDataFI} = require("./util/processUserData");
 
 
 // use the express-static middleware
@@ -126,6 +124,7 @@ app.get("/data/fi/:mobileNumber/:type", async (req, res) => {
 
   axios(requestConfig)
     .then(function (response) {
+      processUserData(type, response.data);
       console.log(response.data)
     })
     .catch(function (error) {
@@ -142,6 +141,8 @@ app.get("/data/aa/:mobileNumber/:type", async (req, res) => {
   
   let mobile = req.params.mobileNumber
   let type = req.params.type
+  console.log(type,mobile)
+
   let user = await idDetailsOfUser(mobile)
   if(!user.trackingId){
     res.end(JSON.stringify({"status":"NO_TRACKING_ID"}));
@@ -157,13 +158,13 @@ app.get("/data/aa/:mobileNumber/:type", async (req, res) => {
 
   axios(requestConfig)
     .then(function (response) {
-      console.log(response.data)
+      var result =  processUserDataAA(type,response.data)
+      res.end(JSON.stringify({"status":"Check server for fetched data details","data":result}));
     })
     .catch(function (error) {
       console.log(error);
       res.end(JSON.stringify({"status":"ERROR"}));
     });
-    res.end(JSON.stringify({"status":"Check server for fetched data details"}));
 
 });
 

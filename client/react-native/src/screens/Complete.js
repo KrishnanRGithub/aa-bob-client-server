@@ -3,12 +3,14 @@ import Background from "../components/Background";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 
-import { storeSession,getSession } from "../helpers/sessionHandler";
+import { storeSession,getSession,clearSession } from "../helpers/sessionHandler";
 
 const config = require("../../config");
 
 export default function Complete({ navigation }) {
-  
+  //   clearSession("user").then(()=>{
+  //   pass=1
+  // })
   const [isLoading, setLoading] = useState(false);
   const [renderPage, setRenderPage] = useState(false);
   const [showToast, setShowToast] = useState(false);

@@ -14,8 +14,6 @@ updateAAID = (mobile,tID,rID)=>{
 
 }
 
-
-
 userDetails = async (mobile) => {   
   var user = await User.findOne({mobile: mobile})
   console.log(user)
