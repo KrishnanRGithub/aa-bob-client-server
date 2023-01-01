@@ -7,10 +7,10 @@ import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import { theme } from '../core/theme'
 
 
-import HomeScreen from '../screens/Test';
-import SettingsScreen from '../screens/Test';
-import ProfileScreen from '../screens/Test';
-import MessagesScreen from '../screens/Test';
+import MutualFundScreen from '../screens/tab/MutualFund';
+import EquitiesScreen from '../screens/tab/Equities';
+import ProfileScreen from '../screens/tab/Profile';
+import TransactionScreen from '../screens/tab/Transaction';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,8 +28,8 @@ screenOptions={{
       paddingBottom:7,
       paddingTop:5,
       height:65,
+      borderTopColor: 'orange',
       backgroundColor: "papayawhip",
-
     },
     labelStyle: {
         fontSize: 14,
@@ -83,17 +83,17 @@ screenOptions={{
         />
         <Tab.Screen
           name="Home"
-          component={HomeScreen}
+          component={TransactionScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Icon name="tags" color={color} size={size} />
+              <Icon name="bank" color={color} size={size} />
             ),
             tabBarLabel: 'Transactions',
           }}
         />
         <Tab.Screen
           name="Messages"
-          component={MessagesScreen}
+          component={MutualFundScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon5 name="coins" color={color} size={size} />
@@ -103,7 +103,7 @@ screenOptions={{
         />
         <Tab.Screen
           name="Settings"
-          component={SettingsScreen}
+          component={EquitiesScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="suitcase" color={color} size={size} />
