@@ -12,11 +12,11 @@ const config = require("../../config");
 
 export default function Dashboard({ navigation, route }) {
   const webviewRef = useRef(null);
-  const redirect_url = config.server_url + "/redirect";
+  const redirect_url = config.base_url + "/Complete";
 
   const onNavigation = (navState) => {
     console.log(navState)
-    if (navState.url.includes(redirect_url)) {
+    if (navState.url.includes(base_url)) {
       navigation.navigate("Complete");
     }
   };

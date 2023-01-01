@@ -18,7 +18,6 @@ const NavBar = () => {
   return (
     <NavigationContainer
         independent={true}
-        style={styles.navbar}
     >
       <Tab.Navigator
 
@@ -117,17 +116,17 @@ screenOptions={{
   );
 };
 
-const styles = StyleSheet.create({
-    navbar: {
-        bottom: 20,
-        shadowColor: 'black', // add shadow to the tab navigator
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        backgroundColor: 'white',
-        borderTopWidth: 1,
-        borderTopColor: 'lightgray',
-    },
-  })
+// const styles = StyleSheet.create({
+//     navbar: {
+//         bottom: 20,
+//         shadowColor: 'black', // add shadow to the tab navigator
+//         shadowOffset: { width: 0, height: 2 },
+//         shadowOpacity: 0.2,
+//         shadowRadius: 2,
+//         backgroundColor: 'white',
+//         borderTopWidth: 1,
+//         borderTopColor: 'lightgray',
+//     },
+//   })
   
 export default NavBar;
