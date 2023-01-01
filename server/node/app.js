@@ -11,7 +11,7 @@ const database = require("./database")  //function intialised on return directly
 const createData = require("./util/consent_detail");
 const dataFlow = require("./util/request_data");
 const initFlow = require("./util/init_consent");
-const {updateAAID,userDetails} = require("./util/db_fucntion")
+const {updateAAID,userDetails,idDetailsOfUser} = require("./util/db_fucntion")
 
 // ROUTERS
 const userRouter = require('./routes/userRouter')
@@ -72,6 +72,8 @@ app.get("/init/:mobileNumber", async (req, res) => {
 
 });
 
+
+//Getting consent status
 app.get("/consent/status/:mobileNumber", async (req, res) => {
   
   let mobile = req.params.mobileNumber
@@ -104,87 +106,41 @@ app.get("/consent/status/:mobileNumber", async (req, res) => {
     });
 });
 
-////// CONSENT NOTIFICATION
-
-app.post("/notification", (req, res) => {
-  var body = req.body;
-  if (body.type === "CONSENT_STATUS_UPDATE") {
-    if (body.data.status === "ACTIVE") {
-      console.log("In Consent notification");
-      fi_data_request(body.consentId);
-    } else {
-      localStorage.setItem("jsonData", "Rejected");
-    }
+//Getting consent status
+app.get("/data/:mobileNumber", async (req, res) => {
+  
+  let mobile = req.params.mobileNumber
+  let user = await idDetailsOfUser(mobile)
+  if(!user.trackingId){
+    res.end(JSON.stringify({"status":"NO_TRACKING_ID"}));
   }
-  if (body.type === "SESSION_STATUS_UPDATE") {
-    if (body.data.status === "COMPLETED") {
-      console.log("In FI notification");
-      fi_data_fetch(body.dataSessionId);
-    } else {
-      localStorage.setItem("jsonData", "PENDING");
-    }
-  }
-
-  res.send("OK");
-});
-
-////// FI DATA REQUEST
-
-const fi_data_request = async (consent_id) => {
-  console.log("In FI data request");
-  let request_body = dataFlow.requestData(consent_id);
-  var requestConfig = {
-    method: "post",
-    url: config.api_url + "/sessions",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: config.api_key,
-    },
-    data: request_body,
-  };
-
-  axios(requestConfig)
-    .then(function (response) {
-      console.log("Data request sent");
-    })
-    .catch(function (error) {
-      console.log(error);
-      console.log("Error");
-    });
-};
-
-////// FETCH DATA REQUEST
-
-const fi_data_fetch = (session_id) => {
-  console.log("In FI data fetch");
   var requestConfig = {
     method: "get",
-    url: config.api_url + "/sessions/" + session_id,
+    url: config.api_url + "/consent/data/fetch?referenceId="+user.referenceId+"&trackingId="+user.trackingId,
     headers: {
       "Content-Type": "application/json",
-      Authorization: config.api_key,
-    },
-  };
+      "API_KEY" : config.api_key,
+    }
+   };
+
   axios(requestConfig)
     .then(function (response) {
-      localStorage.setItem("jsonData", JSON.stringify(response.data));
+      console.log(response.data)
     })
     .catch(function (error) {
       console.log(error);
-      console.log("Error");
+      res.end(JSON.stringify({"status":"ERROR"}));
     });
-};
+    res.end(JSON.stringify({"status":"Check server for fetched data details"}));
+
+});
+
 
 app.post("/redirect", (req, res) => {
   console.log("In redirect");
   console.log(req);
-  res.send(localStorage.getItem("consent"));
+  res.send("Redirect page in Server of FIU");
 });
 
-///// GET DATA
-
-app.get("/get-data", (req, res) => {
-  res.send(JSON.parse(localStorage.getItem("jsonData")));
-});
 // start the server listening for requests
 app.listen(config.port || 3000, () => console.log("Server is running... on "+config.port));
