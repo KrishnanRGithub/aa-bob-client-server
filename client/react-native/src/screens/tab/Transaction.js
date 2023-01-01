@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Background from "../../components/Background";
+import AppBackground from "../../components/AppBackground";
+import AppHeader from "../../components/AppHeader";
 import Header from "../../components/Header";
 
-export default function Test({ navigation }) {
+export default function Transaction({ navigation }) {
 
   return (
-    <Background>
-      <Header>Consent successfully approved</Header>
-    </Background>
+    <AppBackground>
+      <AppHeader title="Transaction">
+      </AppHeader>
+    </AppBackground>
   );
 }
