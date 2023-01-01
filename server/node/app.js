@@ -107,9 +107,10 @@ app.get("/consent/status/:mobileNumber", async (req, res) => {
 });
 
 //Getting user data from FIP 
-app.get("/data/fi/:mobileNumber", async (req, res) => {
+app.get("/data/fi/:mobileNumber/:type", async (req, res) => {
   
   let mobile = req.params.mobileNumber
+  let type = req.params.type
   let user = await idDetailsOfUser(mobile)
   if(!user.trackingId){
     res.end(JSON.stringify({"status":"NO_TRACKING_ID"}));
@@ -137,9 +138,10 @@ app.get("/data/fi/:mobileNumber", async (req, res) => {
 
 
 //Getting user data from AA 
-app.get("/data/aa/:mobileNumber", async (req, res) => {
+app.get("/data/aa/:mobileNumber/:type", async (req, res) => {
   
   let mobile = req.params.mobileNumber
+  let type = req.params.type
   let user = await idDetailsOfUser(mobile)
   if(!user.trackingId){
     res.end(JSON.stringify({"status":"NO_TRACKING_ID"}));
