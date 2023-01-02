@@ -1,9 +1,14 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MMKV } from 'react-native-mmkv'
+import config from '../../config'
+export const storage = new MMKV({
+  id: `angris-storage`,
+  encryptionKey: config.session_key,
+})
 
 export async function storeSession(key,value){
     try {
       value = JSON.stringify(value)
-      await AsyncStorage.setItem(key, value)
+      storage.set(key, value)
     } catch (e) {
         console.log("Error in storing key")
         return false;
@@ -15,7 +20,7 @@ export async function storeSession(key,value){
 export async function getSession(key){
    let value=null 
    try {
-       value = await AsyncStorage.getItem(key)
+      value = storage.getString(key) // 'Marc'
       if(value==null)
         return null
     } catch(e) {
@@ -29,7 +34,7 @@ export async function getSession(key){
 
 export async function signoutSession(){
   try {
-    await AsyncStorage.clear()
+    storage.clearAll()
   } catch (e) {
       console.log(e)
       return false;
@@ -39,7 +44,7 @@ export async function signoutSession(){
 
 export async function clearSession(key){
     try {
-      await AsyncStorage.removeItem(key);
+      storage.delete(key)
     } catch (e) {
         console.log("Error in clearing session")
         return false;
@@ -50,8 +55,7 @@ export async function clearSession(key){
 }
 export async function isSessionSet(key){
     try {
-      const value = await AsyncStorage.getItem(key)
-      return value != null ? true : false;
+      return storage.getBoolean(key) 
     } catch(e) {
         console.log("Error in fetching session");
       // error reading value
