@@ -12,7 +12,7 @@ const {updateAAID,userDetails,idDetailsOfUser} = require("./util/db_fucntion")
 
 // ROUTERS
 const userRouter = require('./routes/userRouter');
-const {processUserDataAA,processUserDataFI} = require("./util/processUserData");
+const {processUserDataAA,processUserDataFI} = require("./util/process_user_data");
 
 
 // use the express-static middleware
