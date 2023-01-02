@@ -2,5 +2,17 @@ Redis server to manage otp thing in server sudo apt-get install redis-server
 redis-cli flushall
 
 
+add logout
+pull to sync and local storage fetch
+add filter in transactions
+add overall metric
+finish profile screen
+sort my recent tracnsaction first
+change date time format
+add otp screen on creating account
+change the loading screen to trandslucewnt one with center scroller
+
+
+
 https://assets-netstorage.groww.in/stock-assets/logos/GSTK50032.png
 https://assets-netstorage.groww.in/mf-assets/logos/reliance_groww.png

@@ -7,7 +7,7 @@ export default function MutualFund({ navigation }) {
 
   return (
     <AppBackground>
-    <AppHeader title="Mutual Fund">
+    <AppHeader title="Mutual Funds">
     </AppHeader>
   </AppBackground>
   );

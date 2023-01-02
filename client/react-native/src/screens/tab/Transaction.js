@@ -5,20 +5,13 @@ import Header from "../../components/Header";
 import { getSession } from "../../helpers/sessionHandler";
 import DateRangePicker from "../../components/DateRangePicker";
 import TransactionList from "../../components/TransactionList";
+import RefreshScreen from "../../components/RefreshScreen";
+import { View } from "react-native";
 const config = require("../../../config");
 
 export default function Transaction({ navigation }) {
   
 
-  // SALARY" "EMI" "LOAN_DISBURSAL" "BOUNCED_IW_ECS" "BOUNCE_TRANSACTION" "BOUNCED_IW_CHEQUE" 
-  // "BOUNCED_OW_CHEQUE" "IW_CHEQUE_BOUNCE_CHARGE" "OW_CHEQUE_BOUNCE_CHARGE" "BOUNCED_IW_ECS_CHARGE" 
-  // "BOUNCE_CHARGE" "TAX_PAYMENT" "TRANSFER_TO_WALLET" "TRANSFER_FROM_WALLET_TO_BANK" "CASH_WITHDRAWAL" 
-  // "MINIMUM_BALANCE_CHARGE" "BANK_CHARGE" "TRANSFER_TO_FD_RD" "INTEREST_COLLECTED" "SALARY_PAID" "CREDIT_CARD_PAYMENT" 
-  // "ALCOHOL" "SMALL_SAVINGS" "INTEREST_CREDIT" "CASH_DEPOSIT" "REVERSAL_TXN" "CASH_BACK" "SUBSIDY" "PF_WITHDRAWAL" 
-  // "MICROFINANCE" "FOODTRANSPORTATIONENTERTAINMENT" "GAMBLING_AND_BETTING" "SHOPPING" "UTILITIESINVESTMENT_INCOME" "INVESTMENT_EXPENSE" 
-  // "HEALTHCAREINSURANCE_PREMIUM" "INSURANCE_CLAIMED" "RENT" "PURCHASE_BY_CARD" "TRANSFER_INTRANSFER_OUTDONATION" "PERSONAL_CARE"
-
-  // Salary,CAHBACK  EMI,LOADN,BANK,   
 
   const [transaction, setTransaction] = useState([]);
 
@@ -49,16 +42,19 @@ export default function Transaction({ navigation }) {
   },[])
 
   return (
+    <RefreshScreen onRefresh={()=>{console.log("Refreshing in Transaction")}}>
     <AppBackground>
-      <AppHeader title="Transaction">
+      <AppHeader title="Transactions">
       </AppHeader>
       {transaction.map((i, index) => (
-                <TransactionList
-                key={index}
-                prop={i}
-                ></TransactionList>
-            ))}
+                  <TransactionList
+                  key={index}
+                  prop={i}
+                  ></TransactionList>
+              ))}  
       {/* <DateRangePicker></DateRangePicker> */}
     </AppBackground>
+    </RefreshScreen>
+
   );
 }

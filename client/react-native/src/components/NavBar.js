@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text,StyleSheet } from 'react-native';
+import { View, Text,StyleSheet,TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -82,17 +82,17 @@ screenOptions={{
           }}
         />
         <Tab.Screen
-          name="Home"
+          name="Transactions"
           component={TransactionScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Icon name="bank" color={color} size={size} />
+                  <Icon name="bank" color={color} size={size} />
             ),
             tabBarLabel: 'Transactions',
           }}
         />
         <Tab.Screen
-          name="Messages"
+          name="Mutual Funds"
           component={MutualFundScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
@@ -102,7 +102,7 @@ screenOptions={{
           }}
         />
         <Tab.Screen
-          name="Settings"
+          name="Equities"
           component={EquitiesScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
