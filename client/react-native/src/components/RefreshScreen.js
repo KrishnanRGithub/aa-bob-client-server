@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RefreshControl, ScrollView, View, StyleSheet, Animated,Dimensions } from 'react-native';
 const screenHeight = Dimensions.get('window').height;
-
+import { theme } from '../core/theme';
 const RefreshScreen = ({ children, onRefresh }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [translateY] = useState(new Animated.Value(0));
@@ -32,6 +32,7 @@ const RefreshScreen = ({ children, onRefresh }) => {
 
   return (
     <ScrollView
+    style={{backgroundColor: theme.colors.surface}}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}

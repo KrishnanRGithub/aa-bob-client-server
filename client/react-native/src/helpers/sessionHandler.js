@@ -29,10 +29,9 @@ export async function getSession(key){
 
 export async function signoutSession(){
   try {
-    const keys = await AsyncStorage.getAllKeys()
-    await AsyncStorage.multiRemove(keys)
+    await AsyncStorage.clear()
   } catch (e) {
-      console.log("Error in clearing session")
+      console.log(e)
       return false;
   }
   return true;
