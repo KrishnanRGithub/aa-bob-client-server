@@ -1,9 +1,12 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MMKVLoader } from 'react-native-mmkv-storage';
+
+export var storage = new MMKVLoader()
+.withEncryption() // Generates a random key and stores it securely in Keychain
 
 export async function storeSession(key,value){
     try {
       value = JSON.stringify(value)
-      await AsyncStorage.setItem(key, value)
+      await storage.setStringAsync(key, value);
     } catch (e) {
         console.log("Error in storing key")
         return false;
@@ -15,7 +18,7 @@ export async function storeSession(key,value){
 export async function getSession(key){
    let value=null 
    try {
-       value = await AsyncStorage.getItem(key)
+      value=await storage.getStringAsync(key);
       if(value==null)
         return null
     } catch(e) {
@@ -29,7 +32,7 @@ export async function getSession(key){
 
 export async function signoutSession(){
   try {
-    await AsyncStorage.clear()
+    storage.clearStore();
   } catch (e) {
       console.log(e)
       return false;
@@ -39,7 +42,7 @@ export async function signoutSession(){
 
 export async function clearSession(key){
     try {
-      await AsyncStorage.removeItem(key);
+      storage.removeItem(key);
     } catch (e) {
         console.log("Error in clearing session")
         return false;
@@ -50,7 +53,8 @@ export async function clearSession(key){
 }
 export async function isSessionSet(key){
     try {
-      const value = await AsyncStorage.getItem(key)
+      
+      value=await storage.getStringAsync(key);
       return value != null ? true : false;
     } catch(e) {
         console.log("Error in fetching session");
