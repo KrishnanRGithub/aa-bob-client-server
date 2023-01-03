@@ -3,6 +3,16 @@ redis-cli flushall
 
 
 pull to sync and local storage fetch
+sort my recent tracnsaction first
+generalise the fetch and store and refresh
+change date time format
+add otp screen on creating account
+add angris.in
+
+
+
+
+
 add filter in transactions
 add overall metric
 
@@ -10,9 +20,8 @@ add overall metric
 
 add logout
 finish profile screen
-sort my recent tracnsaction first
-change date time format
-add otp screen on creating account
+
+
 change the loading screen to trandslucewnt one with center scroller
 
 
