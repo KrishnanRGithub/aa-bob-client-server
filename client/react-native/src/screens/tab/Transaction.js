@@ -6,7 +6,7 @@ import { getSession } from "../../helpers/sessionHandler";
 import DateRangePicker from "../../components/DateRangePicker";
 import TransactionList from "../../components/TransactionList";
 import RefreshScreen from "../../components/RefreshScreen";
-import LoadingScreen from "../components/LoadingScreen";
+import LoadingScreen from "../../components/LoadingScreen";
 
 import { View } from "react-native";
 const config = require("../../../config");
