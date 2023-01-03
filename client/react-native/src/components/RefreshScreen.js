@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   fetch: {
     position:'absolute',
     zIndex:20,
-    top:10,
+    top:7,
     right:10,
     width: 40,
     height: 40,

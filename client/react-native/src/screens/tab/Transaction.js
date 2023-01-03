@@ -7,7 +7,7 @@ import DateRangePicker from "../../components/DateRangePicker";
 import TransactionList from "../../components/TransactionList";
 import RefreshScreen from "../../components/RefreshScreen";
 import LoadingScreen from "../../components/LoadingScreen";
-
+import { fetchData } from "../../helpers/dataStore";
 import { View } from "react-native";
 const config = require("../../../config");
 
@@ -16,17 +16,6 @@ export default function Transaction({ navigation }) {
 
 
   const [transaction, setTransaction] = useState([]);
-
-  const fetchData = async(mobileNumber,type)=>{
-    let url = "http://"+config.server_url + "/data/aa/"+mobileNumber+"/"+type;
-    console.log(url);
-    const response = await fetch(url,  {headers: {
-      'Content-Type': 'application/json'
-    }});
-    // console.log("Response fetched from AA");
-    const reply = await response.json();
-    return reply
-  }
   
   
   if(false){
