@@ -7,6 +7,7 @@ import Toast from "../components/Toast";
 import TextInput from "../components/TextInput";
 import PinField from "../components/PinField";
 import RedirectLink from "../components/RedirectLink";
+import LoadingScreen from "../components/LoadingScreen";
 import { ActivityIndicator, Linking } from "react-native";
 import { numberValidator } from "../helpers/numberValidator";
 import { Keyboard } from 'react-native';
@@ -99,8 +100,8 @@ export default Login = ({ navigation }) => {
         setLoading(false);
       }
     };
-    if(renderPage==false){
-      return<></>
+    if(renderPage==false||isLoading){
+      return<><LoadingScreen></LoadingScreen></>
     }
 
   return (
@@ -129,7 +130,6 @@ export default Login = ({ navigation }) => {
         linkText="New here ? Click here to signup"
       />
       {showToast && (<Toast message= {toastMsg.message} type={toastMsg.type} />)}
-      {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
     </Background>
   );
 };

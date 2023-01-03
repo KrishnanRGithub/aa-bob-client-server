@@ -11,6 +11,7 @@ import { ActivityIndicator, Linking } from "react-native";
 import { numberValidator } from "../helpers/numberValidator";
 import { Keyboard } from 'react-native';
 import { storeSession,isSessionSet } from "../helpers/sessionHandler";
+import LoadingScreen from "../components/LoadingScreen";
 
 
 const config = require("../../config");
@@ -21,7 +22,7 @@ export default function Signup({ navigation }) {
     const [repin, setRepin] = useState("");
     const [isLoading, setLoading] = useState(false);
     const [showToast, setShowToast] = useState(false);
-    const [toastMsg, setToastMsg] = useState({message:null, type:null});
+    const [toastMsg, setToastMsg] = useState({message:null, type:"success"});
     const [renderPage, setRenderPage] = useState(false);
 
        
@@ -101,8 +102,8 @@ export default function Signup({ navigation }) {
 
     };
 
-    if(renderPage==false){
-      return<></>
+    if(renderPage==false||isLoading){
+      return<><LoadingScreen></LoadingScreen></>
     }
   return (
     <Background>
@@ -137,7 +138,7 @@ export default function Signup({ navigation }) {
       linkText="Existing user ? Click here to login"
     />
     {showToast && (<Toast message= {toastMsg.message} type={toastMsg.type} />)}
-    {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
+    {/* {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null} */}
   </Background>
   );
 }

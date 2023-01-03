@@ -10,8 +10,10 @@ import { numberValidator } from "../helpers/numberValidator";
 import { StyleSheet } from 'react-native';
 import RedirectLink from "../components/RedirectLink";
 import { storeSession,getSession,clearSession } from "../helpers/sessionHandler";
-const config = require("../../config");
+import LoadingScreen from "../components/LoadingScreen";
 
+
+const config = require("../../config");
 const styles = StyleSheet.create({
   unedit: {
     backgroundColor:"#e0e0e0",
@@ -117,8 +119,8 @@ export default function StartScreen({ navigation }) {
     }
   };
 
-  if(renderPage==false){
-    return<></>
+  if(renderPage==false||isLoading){
+    return<><LoadingScreen></LoadingScreen></>
   }
 
   return (
@@ -145,7 +147,7 @@ export default function StartScreen({ navigation }) {
         toPage="Logout"
         linkText="Click here to logout and use a differnet number"
       />
-      {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
+      {/* {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null} */}
     </Background>
   );
 }
