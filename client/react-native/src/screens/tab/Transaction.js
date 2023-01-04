@@ -14,11 +14,22 @@ const config = require("../../../config");
 export default function Transaction({ navigation }) {
   
 
+  const [transaction, setTransaction] = useState(null);
+  const [userDetails,setUserDetails] = useState(null);
 
-  const [transaction, setTransaction] = useState([]);
-  const [userDetails,setUserDetails] = useState({});
 
-
+  useEffect(() => {
+    getSession("user").then((val) => {
+      setUserDetails(val);
+    });
+  }, []); // empty array ensures that the effect only runs once
+  
+  useEffect(() => {
+    refreshTransactions().then(() => {
+      console.log("Transaction refreshed");
+    });
+  }, [userDetails]); 
+  
   async function refreshTransactions(){
       try{
         let data =await fetchDataAA(userDetails['mobile'],"allTransactions")
@@ -28,8 +39,7 @@ export default function Transaction({ navigation }) {
       }
       catch(err){
         console.log(err);
-      }
-      
+      } 
   }
 
 
@@ -38,17 +48,7 @@ export default function Transaction({ navigation }) {
   }
 
 
-  useEffect(()=>{
-    getSession("user").then((val)=>{
-      setUserDetails(val);
-    })
-    getTransaction().then((val)=>{
-      setTransaction(val);
-      if (transaction==null){
-        refreshTransactions();
-      }
-    }) 
-  },[])
+
 
   return (
     <RefreshScreen onRefresh={()=>{refreshTransactions()}}>
