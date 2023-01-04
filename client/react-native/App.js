@@ -3,7 +3,7 @@ import { Provider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from "./src/core/theme";
-import { StartScreen, Complete, Dashboard, Login, Signup, Logout } from "./src/screens";
+import { StartScreen, Complete, Dashboard, Login, Signup, Logout,NameScreen } from "./src/screens";
 // import { Profile, Equities, Transaction, MutualFund } from "./src/screens";
 
 const Stack = createStackNavigator();
@@ -13,11 +13,12 @@ export default function App() {
     <Provider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Login"
+          initialRouteName="NameScreen"
           screenOptions={{
             headerShown: false,
           }}
         >
+          <Stack.Screen name="NameScreen" component={NameScreen} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="StartScreen" component={StartScreen} />
