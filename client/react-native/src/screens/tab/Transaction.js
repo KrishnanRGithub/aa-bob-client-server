@@ -17,9 +17,11 @@ export default function Transaction({ navigation }) {
 
   const [transaction, setTransaction] = useState([]);
   const [userDetails,setUserDetails] = useState({});
+
+
   async function refreshTransactions(){
       try{
-        data =await fetchDataAA(userDetails['mobile'],"allTransactions")
+        let data =await fetchDataAA(userDetails['mobile'],"allTransactions")
         console.log("Setting transaction in TPage",data.data.length)
         setTransaction(data.data);
         storeTransaction(data.data)  
@@ -30,6 +32,10 @@ export default function Transaction({ navigation }) {
       
   }
 
+
+  if(false){
+    return<><LoadingScreen></LoadingScreen></>
+  }
 
 
   useEffect(()=>{

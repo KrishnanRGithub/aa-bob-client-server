@@ -9,10 +9,11 @@ const RefreshScreen = ({ children, onRefresh }) => {
   const [translateY] = useState(new Animated.Value(0));
   const [fetching, setFetching] = useState(false);
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setRefreshing(false);
     setFetching(true);
-    setTimeout(() => {setFetching(false)}, 3000);
+    await onRefresh();
+    setTimeout(() => {setFetching(false)}, 2000);
 };
 
   const handleScrollBeginDrag = () => {
