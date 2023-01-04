@@ -102,8 +102,12 @@ export default function Signup({ navigation }) {
 
     };
 
-    if(renderPage==false||isLoading){
+
+    if(isLoading){
       return<><LoadingScreen></LoadingScreen></>
+    }
+    if(renderPage==false){
+      return<></>
     }
   return (
     <Background>

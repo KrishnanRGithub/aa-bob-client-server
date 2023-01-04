@@ -119,10 +119,13 @@ export default function StartScreen({ navigation }) {
     }
   };
 
-  if(renderPage==false||isLoading){
+
+  if(isLoading){
     return<><LoadingScreen></LoadingScreen></>
   }
-
+  if(renderPage==false){
+    return<></>
+  }
   return (
     <Background>
       <Logo />

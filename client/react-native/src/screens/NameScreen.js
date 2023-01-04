@@ -11,11 +11,13 @@ export default NameScreen = ({ navigation }) => {
   });
   if(fontsLoaded){
 
-  setTimeout(() => {
+
+    setTimeout(() => {
         navigation.navigate('Login')
-  }, 1500);
+        }, 800)  
+
   return (
-    <View style={styles.background}>
+    <View style={styles.background} onStartShouldSetResponder={() => true} onResponderGrant={()=>navigation.navigate('Login')}>
 
     <ImageBackground
       resizeMode="repeat"

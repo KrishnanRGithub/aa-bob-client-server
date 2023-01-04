@@ -100,8 +100,11 @@ export default Login = ({ navigation }) => {
         setLoading(false);
       }
     };
-    if(renderPage==false||isLoading){
+    if(isLoading){
       return<><LoadingScreen></LoadingScreen></>
+    }
+    if(renderPage==false){
+      return<></>
     }
 
   return (
@@ -133,3 +136,4 @@ export default Login = ({ navigation }) => {
     </Background>
   );
 };
+

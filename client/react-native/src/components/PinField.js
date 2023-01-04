@@ -30,7 +30,6 @@ const PinField = ({ onChange, description, ...props }) => {
                 maxLength={1}
                 onChangeText={text => handleChange(text, index)}
                 value={numbers[index]}
-                autoFocus={index === 0}
                 secureTextEntry
                 />
             ))}
