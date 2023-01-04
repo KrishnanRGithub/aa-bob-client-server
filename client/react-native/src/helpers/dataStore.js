@@ -18,7 +18,17 @@ export async function fetchDataAA(mobileNumber,type){
     const reply = await response.json();
     return reply
 }
-  
+ 
+export async function fetchDataFI(mobileNumber,type){
+    let url = "http://"+config.server_url + "/data/fi/"+mobileNumber+"/"+type;
+    console.log(url);
+    const response = await fetch(url,  {headers: {
+      'Content-Type': 'application/json'
+    }});
+    // console.log("Response fetched from AA");
+    const reply = await response.json();
+    return reply
+}
 
 export async function storeTransaction(value){
     return await storeSession(key.transaction, value);

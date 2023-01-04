@@ -124,7 +124,7 @@ app.get("/data/fi/:mobileNumber/:type", async (req, res) => {
 
   axios(requestConfig)
     .then(function (response) {
-      processUserData(type, response.data);
+      processUserDataFI(type, response.data);
       console.log(response.data)
     })
     .catch(function (error) {
