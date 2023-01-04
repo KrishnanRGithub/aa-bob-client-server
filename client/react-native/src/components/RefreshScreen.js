@@ -3,20 +3,16 @@ import LoadingScreen from './LoadingScreen';
 import { RefreshControl, ScrollView, View, StyleSheet, Animated,Dimensions,Image } from 'react-native';
 const screenHeight = Dimensions.get('window').height;
 import { theme } from '../core/theme';
+
 const RefreshScreen = ({ children, onRefresh }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [translateY] = useState(new Animated.Value(0));
   const [fetching, setFetching] = useState(false);
 
   const handleRefresh = () => {
-    setRefreshing(true);
-    setFetching(true);
-    onRefresh()
-    // .then(() => setRefreshing(false))
-    // .catch(() => setRefreshing(false));
-    setTimeout(()=>{setFetching(false)}, 7000); 
     setRefreshing(false);
-
+    setFetching(true);
+    setTimeout(() => {setFetching(false)}, 3000);
 };
 
   const handleScrollBeginDrag = () => {

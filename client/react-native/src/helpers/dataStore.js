@@ -8,7 +8,7 @@ const key =  {
 }
 
 
-export async function fetchData(mobileNumber,type){
+export async function fetchDataAA(mobileNumber,type){
     let url = "http://"+config.server_url + "/data/aa/"+mobileNumber+"/"+type;
     console.log(url);
     const response = await fetch(url,  {headers: {

@@ -7,7 +7,7 @@ import DateRangePicker from "../../components/DateRangePicker";
 import TransactionList from "../../components/TransactionList";
 import RefreshScreen from "../../components/RefreshScreen";
 import LoadingScreen from "../../components/LoadingScreen";
-import { fetchData } from "../../helpers/dataStore";
+import { fetchDataAA,getTransaction,storeTransaction } from "../../helpers/dataStore";
 import { View } from "react-native";
 const config = require("../../../config");
 
@@ -16,30 +16,40 @@ export default function Transaction({ navigation }) {
 
 
   const [transaction, setTransaction] = useState([]);
-  
-  
-  if(false){
-    return<><LoadingScreen></LoadingScreen></>
+  const [userDetails,setUserDetails] = useState({});
+  async function refreshTransactions(){
+      try{
+        data =await fetchDataAA(userDetails['mobile'],"allTransactions")
+        console.log("Setting transaction in TPage",data.data.length)
+        setTransaction(data.data);
+        storeTransaction(data.data)  
+      }
+      catch(err){
+        console.log(err);
+      }
+      
   }
+
+
+
   useEffect(()=>{
     getSession("user").then((val)=>{
-      if (val["mobile"]){
-        fetchData(val["mobile"],"allTransactions").then((data)=>{
-          console.log("Setting transaction in TPage",data.data.length)
-          setTransaction(data.data);
-        }).catch((err)=>{
-          console.log(err)
-        })
-      }
+      setUserDetails(val);
     })
+    getTransaction().then((val)=>{
+      setTransaction(val);
+      if (transaction==null){
+        refreshTransactions();
+      }
+    }) 
   },[])
 
   return (
-    <RefreshScreen onRefresh={()=>{console.log("Refreshing in Transaction")}}>
+    <RefreshScreen onRefresh={()=>{refreshTransactions()}}>
     <AppBackground>
       <AppHeader title="Transactions">
       </AppHeader>
-      {transaction.map((i, index) => (
+      {transaction && transaction.map((i, index) => (
                   <TransactionList
                   key={index}
                   prop={i}
