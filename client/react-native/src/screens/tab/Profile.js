@@ -14,7 +14,7 @@ export default function Profile({ navigation }) {
         </AppHeader>
           <ListButton 
               item={{text:"Logout",icon:"logout"}} 
-              onPress={()=>{signoutSession(); navigation.navigate("StartScreen");}} 
+              onPress={()=>{signoutSession(); navigation.navigate("Login");}} 
             />    
       </AppBackground>
     </RefreshScreen>
