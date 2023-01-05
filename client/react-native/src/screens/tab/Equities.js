@@ -6,12 +6,26 @@ import { fetchDataFI,storeEquity } from "../../helpers/dataStore";
 import FetchLoader from "../../components/FetchLoader";
 import { getSession } from "../../helpers/sessionHandler";
 import RefreshScreen from "../../components/RefreshScreen";
-
+import EquityList from "../../components/EquityList";
+import Transaction from "./Transaction";
+import Profile from "./Profile";
+import SplitScreenNavigator from "../../components/SplitScreenNavigator";
 export default function Equities({ navigation }) {
   const [equities, setEquities] = useState(null);
   const [userDetails,setUserDetails] = useState(null);
 
-
+  const routes = [
+    {
+      index:0,
+      title: 'Holdings',
+      component: <Transaction />,
+    },
+    {
+      index:1,
+      title: 'Transactions',
+      component: <Profile />,
+    },
+  ];
   useEffect(() => {
     getSession("user").then((val) => {
       setUserDetails(val);
@@ -43,8 +57,14 @@ export default function Equities({ navigation }) {
       <AppBackground>
         <AppHeader title="Equities">
         </AppHeader>
+        {/* <SplitScreenNavigator routes={routes} /> */}
         {equities==null?<FetchLoader></FetchLoader>:null}  
-
+      {equities && equities.map((i, index) => (
+                  <EquityList
+                  key={index}
+                  prop={i}
+                  ></EquityList>
+              ))}
       </AppBackground>
     </RefreshScreen>
   );

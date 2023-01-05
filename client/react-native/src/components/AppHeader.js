@@ -2,11 +2,34 @@ import React,{useState} from 'react';
 import { Image,View, Text, StatusBar, StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '../core/theme'
 import { signoutSession } from '../helpers/sessionHandler';
+import SplitScreenNavigator from './SplitScreenNavigator';
 const kebab_menu = require('../assets/icons/logout-menu.png');
+import {useFonts} from 'expo-font';
 
-const AppHeader = ({ title, children }) => {
+import Profile from '../screens/tab/Profile';
+import Transaction from '../screens/tab/Transaction';
+
+const AppHeader = ({ title,subNav,children,routes }) => {
   const [logoutVisible, setLogoutVisible] = useState(false);
-  return (
+  
+//   const split = {
+//     "Equities":{"isSet":true,
+//     "path":[
+//     {
+//       title: 'Holdings',
+//       component: <Profile />,
+//     },
+//     {
+//       title: 'Transactions',
+//       component: <Profile />,
+//     },
+//   ]}
+// };
+const [fontsLoaded] = useFonts({
+  'headFont': require('../assets/head.ttf'),
+});
+if(fontsLoaded){
+    return (
     <View style={styles.container}>
       <View style={{     flexDirection: 'row',
       justifyContent: 'space-between',
@@ -14,17 +37,17 @@ const AppHeader = ({ title, children }) => {
         <StatusBar backgroundColor= "papayawhip" />
         <Text style={styles.title}>{title}</Text>
       </View>
+      {/* {split["title"]["isSet"]?<SplitScreenNavigator routes={split["title"]['path']} />:null}   */}
       {children}
     </View>
   );
+    }
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 10,
     backgroundColor: "papayawhip",
-    borderBottomColor: "orange",
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 0,
     width: "100%",
     flexDirection: 'row',
     alignItems: 'center',
@@ -34,7 +57,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: 'headFont',
+    // fontWeight: 'bold',
     color: theme.colors.primary,
     marginLeft: 10,
   },

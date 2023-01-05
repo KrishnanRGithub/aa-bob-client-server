@@ -38,8 +38,8 @@ export async function storeEquity(value){
     return await storeSession(key.equity, value);
 }
 
-export async function storeMutalF(value){
-    return await storeSession(key.transaction, value)   ;
+export async function storeMutualFund(value){
+    return await storeSession(key.mutualfund, value)   ;
 }
 
 
@@ -51,6 +51,6 @@ export async function getEquity(value){
     return await getSession(key.equity);
 }
 
-export async function getMutalF(value){
-    return await getSession(key.transaction)   ;
+export async function getMutualFund(value){
+    return await getSession(key.mutualfund)   ;
 }

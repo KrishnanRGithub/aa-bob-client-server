@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon5 from 'react-native-vector-icons/FontAwesome5';
 import { theme } from '../core/theme'
-
+import {useFonts} from 'expo-font';
 
 import MutualFundScreen from '../screens/tab/MutualFund';
 import EquitiesScreen from '../screens/tab/Equities';
@@ -15,6 +15,12 @@ import TransactionScreen from '../screens/tab/Transaction';
 const Tab = createBottomTabNavigator();
 
 const NavBar = () => {
+
+  const [fontsLoaded] = useFonts({
+    'noteFont': require('../assets/note.ttf'),
+  });
+  if(fontsLoaded){
+
   return (
       <Tab.Navigator
 
@@ -30,8 +36,9 @@ screenOptions={{
     },
     labelStyle: {
         fontSize: 14,
-        fontWeight: 'bold',
-        marginBottom: 10,         
+        marginBottom: 10,
+      fontFamily: 'noteFont',
+
         activeTintColor: "red",
         inactiveTintColor: "gray",    
     },
@@ -41,6 +48,8 @@ screenOptions={{
     inactiveTintColor: "gray",
     labelStyle: {
        fontSize:11,
+      fontFamily: 'noteFont',
+
         fontWeight: 'bold',
         marginBottom: 3,         
      },
@@ -110,6 +119,7 @@ screenOptions={{
         />
       </Tab.Navigator>
   );
+        }
 };
 
 // const styles = StyleSheet.create({

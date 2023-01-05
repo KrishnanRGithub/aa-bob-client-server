@@ -1,5 +1,5 @@
 const processUserDataFI = (type,data) => {
-  var processedData=[]
+  var processedData=null
   var reply ={}
   if(type=="equities"){
     var summary = data[1]['Account']['Summary']['Investment']
@@ -9,46 +9,74 @@ const processUserDataFI = (type,data) => {
           var raw  = i["Holdings"]
           raw.forEach(function(k,index){
             var d=k["Holding"]['investmentDateTime'].split("T")
+            if(processedData==null)processedData=[]
             processedData.push({
               "type": k["Type"],
               "issuerName": k['Holding']["issuerName"],
               "units": k['Holding']["units"],
               "rate": k['Holding']["rate"],
+              "lastTradedPrice": k['Holding']["lastTradedPrice"],
               "dateOfInvestment": d[0],
               "timeOfInvestment": d[1],
             })
           })
       //  })
       })
-      reply['summary'] = processedData.reverse();
-      processedData=[]
+      if(processedData)
+        processedData.reverse()
+      reply['summary'] = processedData;
+      processedData=null
       alldetails.forEach(function(i,index){
         var d=i['transactionDateTime'].split("T")
+        if(processedData==null)processedData=[]
         processedData.push({
-          "symbol": "RELIANCE",
-          "exchange": "NSE",
+          "symbol": i["symbol"],
+          "exchange": i["exchange"],
           "dateOfTransaction": d[0],
           "timeOfTransaction": d[1],
-          "equityCategory": "EQUITY",
-          "rate": "2664.25",
-          "tradeValue": "29306.75",
-          "type": "BUY",
-          "units": "11",
+          "equityCategory": i['equityCategory'],
+          "rate": i['rate'],
+          "tradeValue": i['tradeValue'],
+          "type": i['type'],
+          "units": i['units'],
         })
       })
-      reply['all'] = processedData.reverse();
+      if(processedData)
+        processedData.reverse()
+      reply['all'] = processedData;
       return reply;
    }
+  else if(type=="mutualfund"){
+    console.log(data)
+    var all = data[0]['Account']['Transactions']['Transaction']
+      all.forEach(function(i,index){
+        // i.forEach(function(j,index){
+            if(processedData==null)processedData=[]
+            processedData.push({
+              "amc":i["amc"] ,
+              "fundType":i["fundType"] ,
+              "amount":i["amount"] ,
+              "closingUnits":i["closingUnits"],
+              "navDate":i["navDate"],
+              "type":i["type"] 
+            })
+      })
+      if(processedData)
+        processedData.reverse()
+      reply['all'] = processedData;
+      return reply;
+    }
    return processedData;
 
 }
 
 const processUserDataAA = (type,data) => {
-    var processedData=[]
+    var processedData=null
     if(type=="allTransactions"){
       var temp = data.analytics["allTransactions"]
         for (i in temp){
             var d=temp[i].dateOfTransaction.split("T")
+            if(processedData==null)processedData=[]
             processedData.push({
                 "type": temp[i].type,
                 "amount": temp[i].amount,
@@ -59,6 +87,7 @@ const processUserDataAA = (type,data) => {
                 "category": temp[i].category,
             })
         }
+        if(processedData)
         processedData.reverse()
     }
     return processedData;
