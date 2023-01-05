@@ -1,14 +1,14 @@
 const processUserDataFI = (type,data) => {
   var processedData=[]
-  if(type=="equity"){
-    var data ={}
+  var reply ={}
+  if(type=="equities"){
     var summary = data[1]['Account']['Summary']['Investment']
     var alldetails = data[1]['Account']['Transactions']['Transaction']
-      for (i of summary){
-        for(j of i){
-          var raw  = j["Holdings"]
-          for(k of raw){
-            var d=k["Holdings"]['investmentDateTime'].split("T")
+      summary.forEach(function(i,index){
+        // i.forEach(function(j,index){
+          var raw  = i["Holdings"]
+          raw.forEach(function(k,index){
+            var d=k["Holding"]['investmentDateTime'].split("T")
             processedData.push({
               "type": k["Type"],
               "issuerName": k['Holding']["issuerName"],
@@ -17,12 +17,12 @@ const processUserDataFI = (type,data) => {
               "dateOfInvestment": d[0],
               "timeOfInvestment": d[1],
             })
-          }
-       }
-      }
-      data['summary'] = processedData.reverse();
+          })
+      //  })
+      })
+      reply['summary'] = processedData.reverse();
       processedData=[]
-      for (i of alldetails){
+      alldetails.forEach(function(i,index){
         var d=i['transactionDateTime'].split("T")
         processedData.push({
           "symbol": "RELIANCE",
@@ -35,9 +35,9 @@ const processUserDataFI = (type,data) => {
           "type": "BUY",
           "units": "11",
         })
-      }
-      data['all'] = processedData.reverse();
-      return data;
+      })
+      reply['all'] = processedData.reverse();
+      return reply;
    }
    return processedData;
 

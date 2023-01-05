@@ -23,9 +23,9 @@ export default function Equities({ navigation }) {
     try{
       let data =await fetchDataFI(userDetails['mobile'],"equities")
       console.log(data)
-      console.log("Setting eqities in EPage",data.data.length)
-      setEquities(data.data);
-      storeEquity(data.data)  
+      console.log("Setting equities in EPage")
+      setEquities(data.data.summary);
+      storeEquity(data.data.summary)  
     }
     catch(err){
       console.log(err);
