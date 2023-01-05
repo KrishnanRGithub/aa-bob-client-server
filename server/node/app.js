@@ -7,7 +7,7 @@ var axios = require("axios");
 const database = require("./database")  //function intialised on return directly
 
 // UTILS
-const initFlow = require("./util/init_consent");
+const initConsent = require("./util/init_consent");
 const {updateAAID,userDetails,idDetailsOfUser} = require("./util/db_fucntion")
 
 // ROUTERS
@@ -38,7 +38,12 @@ app.get("/", function (req, res) {
 app.get("/init/:mobileNumber", async (req, res) => {
   console.log("Serve Consent");
   let mobile = req.params.mobileNumber
-  let body = initFlow(mobile);
+  let user = await userDetails(mobile)
+  let tId = null
+  if(user.trackingId){
+      tId=user.trackingId
+  }
+  let body = initConsent(mobile,tId);
   var requestConfig = {
     method: "post",
     url: config.api_url + "/init/redirection",

@@ -33,14 +33,15 @@ export default function Profile({ navigation }) {
       <AppBackground>
         <AppHeader title="Profile">
         </AppHeader>
+
+        <ListButton 
+              item={{text:"Allow access in Account Aggregator",icon:"sync"}} 
+              onPress={async ()=>{await removeAAUserIdFromSession();  navigation.navigate("StartScreen"); }} 
+            />    
           <ListButton 
               item={{text:"Logout",icon:"logout"}} 
               onPress={()=>{signoutSession(); navigation.navigate("Login");}} 
             /> 
-          <ListButton 
-              item={{text:"Alow access in Account Aggregator",icon:"sync"}} 
-              onPress={async ()=>{await removeAAUserIdFromSession();  navigation.navigate("StartScreen"); }} 
-            />    
       </AppBackground>
     </RefreshScreen>
 

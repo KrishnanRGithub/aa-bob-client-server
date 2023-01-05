@@ -3,11 +3,14 @@ const { v4: uuidv4 } = require('uuid');
 
 
 //TODO STORE TRACKING ID IN MONGODB
-const initConsent = (mobileNumber) => {
+const initConsent = (mobileNumber,tId) => {
+  if(tId==null){
+    tId=uuidv4();
+  }
   var data = JSON.stringify({
     vuaId: mobileNumber + "@" + config.aa_id,
     templateType: "PERIODIC",
-    trackingId: uuidv4(),
+    trackingId: tId,
     redirectionUrl: "http://"+config.hosted_url + "/redirect",
   });   
   // console.log(data);
