@@ -4,10 +4,8 @@ import { theme } from '../core/theme'
 import { signoutSession } from '../helpers/sessionHandler';
 const kebab_menu = require('../assets/icons/logout-menu.png');
 
-
 const AppHeader = ({ title, children }) => {
   const [logoutVisible, setLogoutVisible] = useState(false);
-
   return (
     <View style={styles.container}>
       <View style={{     flexDirection: 'row',

@@ -8,6 +8,7 @@ export default NameScreen = ({ navigation }) => {
 
   const [fontsLoaded] = useFonts({
     'titleFont': require('../assets/title.ttf'),
+    'noteFont': require('../assets/note.ttf'),
   });
   if(fontsLoaded){
 
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: theme.colors.secondary,
         paddingVertical: 10,
-        fontStyle:"italic"
+        fontFamily: "noteFont",
       },
       image: {
         width: 150,

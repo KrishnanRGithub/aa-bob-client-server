@@ -124,14 +124,13 @@ app.get("/data/fi/:mobileNumber/:type", async (req, res) => {
 
   axios(requestConfig)
     .then(function (response) {
-      processUserDataFI(type, response.data);
-      console.log(response.data)
+      var result = processUserDataFI(type, response.data);
+      res.end(JSON.stringify({"status":"Check server for fetched data details","data":result}));
     })
     .catch(function (error) {
       console.log(error);
       res.end(JSON.stringify({"status":"ERROR"}));
     });
-    res.end(JSON.stringify({"status":"Check server for fetched data details"}));
 
 });
 

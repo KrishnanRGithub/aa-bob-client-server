@@ -8,7 +8,6 @@ import TransactionList from "../../components/TransactionList";
 import RefreshScreen from "../../components/RefreshScreen";
 import LoadingScreen from "../../components/LoadingScreen";
 import { fetchDataAA,getTransaction,storeTransaction } from "../../helpers/dataStore";
-import { View } from "react-native";
 import FetchLoader from "../../components/FetchLoader";
 const config = require("../../../config");
 
@@ -27,7 +26,7 @@ export default function Transaction({ navigation }) {
   
   useEffect(() => {
     refreshTransactions().then(() => {
-      console.log("Transaction refreshed");
+      console.log("Transaction set on load");
     });
   }, [userDetails]); 
   
