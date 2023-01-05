@@ -9,6 +9,7 @@ import RefreshScreen from "../../components/RefreshScreen";
 import LoadingScreen from "../../components/LoadingScreen";
 import { fetchDataAA,getTransaction,storeTransaction } from "../../helpers/dataStore";
 import { View } from "react-native";
+import FetchLoader from "../../components/FetchLoader";
 const config = require("../../../config");
 
 export default function Transaction({ navigation }) {
@@ -55,12 +56,13 @@ export default function Transaction({ navigation }) {
     <AppBackground>
       <AppHeader title="Transactions">
       </AppHeader>
+      {transaction==null?<FetchLoader></FetchLoader>:null}  
       {transaction && transaction.map((i, index) => (
                   <TransactionList
                   key={index}
                   prop={i}
                   ></TransactionList>
-              ))}  
+              ))}
       {/* <DateRangePicker></DateRangePicker> */}
     </AppBackground>
     </RefreshScreen>
