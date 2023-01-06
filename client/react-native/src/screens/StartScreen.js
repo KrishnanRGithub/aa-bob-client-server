@@ -33,7 +33,7 @@ export default function StartScreen({ navigation }) {
   const [renderPage, setRenderPage] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMsg, setToastMsg] = useState({message:null, type:null});
-  
+  // clearSession("user").then(()=>{console.log("Test")})
   const fetchUrlFromAA = async()=>{
     let url = "http://"+config.server_url + "/init/" + number;
     console.log(url);
