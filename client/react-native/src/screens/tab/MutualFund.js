@@ -4,6 +4,7 @@ import FetchLoader from "../../components/FetchLoader";
 import { getSession } from "../../helpers/sessionHandler";
 import MutualFundList from "../../components/MutualFundList";
 import AppScreen from "../../components/AppScreen";
+import { FlatList } from "react-native";
 export default function MutualFund({ navigation }) {
 
   const [mf, setMF] = useState(null);
@@ -39,12 +40,19 @@ export default function MutualFund({ navigation }) {
 
     <AppScreen prop={{onRefresh:()=>{refreshMF()},title:"Mutual Funds",routes:null}}>
               {mf==null?<FetchLoader></FetchLoader>:null}  
-            {mf && mf.map((i, index) => (
+              <FlatList
+          data={mf}
+          renderItem={({ item, index }) => (
+            <MutualFundList key={index} prop={item}></MutualFundList>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+            {/* {mf && mf.map((i, index) => (
                         <MutualFundList
                         key={index}
                         prop={i}
                         ></MutualFundList>
-                    ))}
+                    ))} */}
     </AppScreen>
   );
 }

@@ -19,7 +19,6 @@ if(fontsLoaded){
         <StatusBar backgroundColor= "papayawhip" />
         <Text style={styles.title}>{title}</Text>
       </View>
-      {/* {split["title"]["isSet"]?<SplitScreenNavigator routes={split["title"]['path']} />:null}   */}
       {children}
     </View>
   );
@@ -67,25 +66,3 @@ const styles = StyleSheet.create({
 });
 
 export default AppHeader;
-
-
-
-{/* <View style={styles.container}>
-<View style={{     flexDirection: 'row',
-justifyContent: 'space-between',
-width: "100%"}}>
-  <StatusBar backgroundColor= "papayawhip" />
-  <Text style={styles.title}>{title}</Text>
-  <TouchableOpacity onPress={() => setLogoutVisible(!logoutVisible)}>
-      <Image source={kebab_menu} style={styles.icon}  />
-  </TouchableOpacity>
-</View>
-{logoutVisible && (
-  <View style={styles.optionContainer}>
-    <TouchableOpacity style={styles.option}>
-      <Text style={styles.optionText}>Option 1</Text>
-    </TouchableOpacity>
-  </View>
-)}
-{children}
-</View> */}

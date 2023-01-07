@@ -25,7 +25,7 @@ export default NameScreen = ({ navigation }) => {
       style={styles.container}
     >
      <Image source={require('../assets/logo.png')} style={styles.image} />
-    <Text style={{...styles.header}}>dhan</Text>
+    <Text style={{...styles.header}}>dhanam</Text>
     <Text style={styles.subtext}>A financial product from Angris</Text>
      </ImageBackground>
     </View>

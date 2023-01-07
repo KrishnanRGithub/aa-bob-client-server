@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
-
+import {useFonts} from 'expo-font';
 const Toast = ({ message, type }) => {
   const [fadeAnim] = useState(new Animated.Value(0));
 
@@ -22,20 +22,24 @@ const Toast = ({ message, type }) => {
     }).start();
   };
 
-  
-  return (
-    <Animated.View
-      style={{
-        ...styles.container,
-        borderColor: type === 'error' ? '#960505' : '#015c28',
-        borderWidth:3,
-        backgroundColor: type === 'error' ? '#bf0606' : '#027835',
-        opacity: fadeAnim,
-      }}
-    >
-      <Text style={styles.text}>{message}</Text>
-    </Animated.View>
-  );
+  const [fontsLoaded] = useFonts({
+    'noteFont': require('../assets/note.ttf'),
+  });
+  if(fontsLoaded){
+      return (
+        <Animated.View
+          style={{
+            ...styles.container,
+            borderColor: type === 'error' ? '#960505' : '#015c28',
+            borderWidth:3,
+            backgroundColor: type === 'error' ? '#bf0606' : '#027835',
+            opacity: fadeAnim,
+          }}
+        >
+          <Text style={styles.text}>{message}</Text>
+        </Animated.View>
+      );
+  }
 };
 
 
@@ -96,6 +100,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     flex: 1,
+    fontFamily: "noteFont",
   },
 });
 

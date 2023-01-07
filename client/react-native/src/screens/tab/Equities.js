@@ -4,6 +4,8 @@ import FetchLoader from "../../components/FetchLoader";
 import { getSession } from "../../helpers/sessionHandler";
 import EquityList from "../../components/EquityList";
 import AppScreen from "../../components/AppScreen";
+import { FlatList } from "react-native";
+
 export default function Equities({ navigation }) {
   const [equities, setEquities] = useState(null);
   const [userDetails,setUserDetails] = useState(null);
@@ -36,12 +38,20 @@ export default function Equities({ navigation }) {
   return (
     <AppScreen prop={{onRefresh:()=>{refreshEquities()},title:"Equities",routes:[{"title":"Holdings","path":"Equities"},{"title":"Transactions","path":"Profile"}],activeRoute:0}}>
       {equities==null?<FetchLoader></FetchLoader>:null}  
-      {equities && equities.map((i, index) => (
+      <FlatList
+          data={equities}
+          renderItem={({ item, index }) => (
+            <EquityList key={index} prop={item}></EquityList>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+
+      {/* {equities && equities.map((i, index) => (
                   <EquityList
                   key={index}
                   prop={i}
                   ></EquityList>
-              ))}
+              ))} */}
     </AppScreen>
   );
 }

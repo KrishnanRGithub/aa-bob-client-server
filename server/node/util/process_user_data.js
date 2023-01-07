@@ -2,8 +2,17 @@ const processUserDataFI = (type,data) => {
   var processedData=null
   var reply ={}
   if(type=="equities"){
-    var summary = data[0]['Account']['Summary']['Investment']
-    var alldetails = data[0]['Account']['Transactions']['Transaction']
+    let index=0;
+    for(index=0;index<data.length;index++){
+      if(data[index]&&data[index]["Account"]){
+        if(data[index]["Account"]["type"]=="equities"){
+          console.log("Found equities",index)
+          break;
+        }
+      }
+    }
+    var summary = data[index]['Account']['Summary']['Investment']
+    var alldetails = data[index]['Account']['Transactions']['Transaction']
       summary.forEach(function(i,index){
         // i.forEach(function(j,index){
           var raw  = i["Holdings"]
@@ -47,8 +56,16 @@ const processUserDataFI = (type,data) => {
       return reply;
    }
   else if(type=="mutualfund"){
-    console.log(data)
-    var all = data[0]['Account']['Transactions']['Transaction']
+    let index=0;
+    for(index=0;index<data.length;index++){
+      if(data[index]&&data[index]["Account"]){
+        if(data[index]["Account"]["type"]=="mutualfunds"){
+          console.log("Found mutualfunds",index)
+          break;
+        }
+      }
+    }
+    var all = data[index]['Account']['Transactions']['Transaction']
       all.forEach(function(i,index){
         // i.forEach(function(j,index){
             if(processedData==null)processedData=[]

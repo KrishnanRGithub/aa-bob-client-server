@@ -1,14 +1,14 @@
 import React from 'react'
-import { StyleSheet, ScrollView } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { theme } from '../core/theme'
 
 export default function AppBackground({ children }) {
   return (
-    <ScrollView
+    <View
       style={styles.container}
     >
         {children}
-    </ScrollView>
+    </View>
   )
 }
 
