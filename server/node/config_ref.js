@@ -7,8 +7,6 @@ const API_URL = "https://hackathon.pirimidtech.com/hackathon";
 const API_KEY = "";
 const AA_ID = "dashboard-aa-uat";
 const HOSTED_URL = "192.168.193.0:5000";
-const FIU_URL = "192.168.193.0:19000";
-
 const MONGO_URL="";
 
 module.exports = {
@@ -19,6 +17,4 @@ module.exports = {
   aa_id: AA_ID,
   hosted_url: HOSTED_URL,
   db_url: MONGO_URL,
-  nexmo:NEXMO,
-  fiu_url:FIU_URL,
 };
