@@ -2,8 +2,8 @@ const processUserDataFI = (type,data) => {
   var processedData=null
   var reply ={}
   if(type=="equities"){
-    var summary = data[1]['Account']['Summary']['Investment']
-    var alldetails = data[1]['Account']['Transactions']['Transaction']
+    var summary = data[0]['Account']['Summary']['Investment']
+    var alldetails = data[0]['Account']['Transactions']['Transaction']
       summary.forEach(function(i,index){
         // i.forEach(function(j,index){
           var raw  = i["Holdings"]

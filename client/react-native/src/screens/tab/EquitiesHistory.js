@@ -4,7 +4,7 @@ import FetchLoader from "../../components/FetchLoader";
 import { getSession } from "../../helpers/sessionHandler";
 import EquityList from "../../components/EquityList";
 import AppScreen from "../../components/AppScreen";
-export default function Equities({ navigation }) {
+export default function EquitiesHistory({ navigation }) {
   const [equities, setEquities] = useState(null);
   const [userDetails,setUserDetails] = useState(null);
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function Equities({ navigation }) {
   }, [userDetails]); 
 
   return (
-    <AppScreen prop={{onRefresh:()=>{refreshEquities()},title:"Equities",routes:[{"title":"Holdings","path":"Equities"},{"title":"Transactions","path":"Profile"}],activeRoute:0}}>
+    <AppScreen prop={{onRefresh:()=>{refreshEquities()},title:"Equities",routes:[{"title":"Holdings","path":"Equities"},{"title":"Transactions","path":"EquitiesHistory"}],activeRoute:1}}>
       {equities==null?<FetchLoader></FetchLoader>:null}  
       {equities && equities.map((i, index) => (
                   <EquityList

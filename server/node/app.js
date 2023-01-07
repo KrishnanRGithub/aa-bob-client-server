@@ -38,11 +38,11 @@ app.get("/", function (req, res) {
 app.get("/init/:mobileNumber", async (req, res) => {
   console.log("Serve Consent");
   let mobile = req.params.mobileNumber
-  let user = await userDetails(mobile)
+  // let user = await userDetails(mobile)
   let tId = null
-  if(user.trackingId){
-      tId=user.trackingId
-  }
+  // if(user.trackingId){
+  //     tId=user.trackingId
+  // }
   let body = initConsent(mobile,tId);
   var requestConfig = {
     method: "post",

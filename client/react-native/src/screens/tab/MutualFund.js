@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import AppBackground from "../../components/AppBackground";
-import AppHeader from "../../components/AppHeader";
-import Header from "../../components/Header";
-
 import { fetchDataFI,storeMutualFund } from "../../helpers/dataStore";
 import FetchLoader from "../../components/FetchLoader";
 import { getSession } from "../../helpers/sessionHandler";
-import RefreshScreen from "../../components/RefreshScreen";
 import MutualFundList from "../../components/MutualFundList";
+import AppScreen from "../../components/AppScreen";
 export default function MutualFund({ navigation }) {
 
   const [mf, setMF] = useState(null);
@@ -40,19 +36,15 @@ export default function MutualFund({ navigation }) {
   }, [userDetails]); 
 
   return (
-    <RefreshScreen onRefresh={()=>{refreshEquities()}}>
-      <AppBackground>
-        <AppHeader title="Mutual Fund">
-        </AppHeader>
-        {/* <SplitScreenNavigator routes={routes} /> */}
-        {mf==null?<FetchLoader></FetchLoader>:null}  
-      {mf && mf.map((i, index) => (
-                  <MutualFundList
-                  key={index}
-                  prop={i}
-                  ></MutualFundList>
-              ))}
-      </AppBackground>
-    </RefreshScreen>
+
+    <AppScreen prop={{onRefresh:()=>{refreshMF()},title:"Mutual Funds",routes:null}}>
+              {mf==null?<FetchLoader></FetchLoader>:null}  
+            {mf && mf.map((i, index) => (
+                        <MutualFundList
+                        key={index}
+                        prop={i}
+                        ></MutualFundList>
+                    ))}
+    </AppScreen>
   );
 }

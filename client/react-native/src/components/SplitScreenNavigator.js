@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-
-const SplitScreenNavigator = ({ routes }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [activeRoute, setActiveRoute] = useState(routes[0]);
+const SplitScreenNavigator = ({ routes,activeRoute }) => {
+  const [activeIndex, setActiveIndex] = useState(activeRoute);
   useEffect(() => {
-    setActiveRoute(routes[activeIndex]);
+    // navigation.navigate(routes[activeIndex]['path'])
   }, [activeIndex]);
   return (
     <View style={styles.container}>
@@ -20,17 +18,6 @@ const SplitScreenNavigator = ({ routes }) => {
           </TouchableOpacity>
         ))}
       </View>
-      <ScrollView style={styles.scrollView} horizontal>
-        {/* {routes.map((route, index) => (
-            index === activeIndex?(<View key={index} style={[styles.content]}>
-            <Text>{index}</Text>
-            {route.component}
-          </View>):null
-        ))} */}
-        <View style={[styles.content]}>
-           {activeRoute.component}
-        </View>
-      </ScrollView>
     </View>
   );
 };
@@ -61,18 +48,32 @@ const styles = StyleSheet.create({
   activeHeaderText: {
     fontWeight: 'bold',
   },
-  scrollView: {
-    flex: 1,
-  },
+  // scrollView: {
+  //   flex: 1,
+  // },
   routeContainer: {
     width: '100%',
   },
-  content:{
-    zIndex:10
-  },
-  inactiveContent:{
-    display:"none"
-  }
+  // content:{
+  //   zIndex:10
+  // },
+  // inactiveContent:{
+  //   display:"none"
+  // }
 });
 
 export default SplitScreenNavigator;
+
+
+
+// <ScrollView style={styles.scrollView} horizontal>
+// {routes.map((route, index) => (
+//     index === activeIndex?(<View key={index} style={[styles.content]}>
+//     <Text>{index}</Text>
+//     {route.component}
+//   </View>):null
+// ))}
+// <View style={[styles.content]}>
+//    {activeRoute.component}
+// </View>
+// </ScrollView>

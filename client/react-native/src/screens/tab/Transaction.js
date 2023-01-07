@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import AppBackground from "../../components/AppBackground";
-import AppHeader from "../../components/AppHeader";
-import Header from "../../components/Header";
 import { getSession } from "../../helpers/sessionHandler";
 import DateRangePicker from "../../components/DateRangePicker";
 import TransactionList from "../../components/TransactionList";
-import RefreshScreen from "../../components/RefreshScreen";
 import LoadingScreen from "../../components/LoadingScreen";
 import { fetchDataAA,getTransaction,storeTransaction } from "../../helpers/dataStore";
 import FetchLoader from "../../components/FetchLoader";
+import AppScreen from "../../components/AppScreen";
 const config = require("../../../config");
 
 export default function Transaction({ navigation }) {
@@ -51,20 +48,25 @@ export default function Transaction({ navigation }) {
 
 
   return (
-    <RefreshScreen onRefresh={()=>{refreshTransactions()}}>
-    <AppBackground>
-      <AppHeader title="Transactions">
-      </AppHeader>
-      {transaction==null?<FetchLoader></FetchLoader>:null}  
+    <AppScreen prop={{onRefresh:()=>{refreshTransactions()},title:"Transactions",routes:null}} >
+       {transaction==null?<FetchLoader></FetchLoader>:null}  
       {transaction && transaction.map((i, index) => (
                   <TransactionList
                   key={index}
                   prop={i}
                   ></TransactionList>
               ))}
-      {/* <DateRangePicker></DateRangePicker> */}
-    </AppBackground>
-    </RefreshScreen>
-
+    </AppScreen>
   );
 }
+
+
+
+
+{/* <RefreshScreen onRefresh={()=>{refreshTransactions()}}>
+<AppBackground>
+  <AppHeader title="Transactions">
+  </AppHeader>
+ 
+</AppBackground>
+</RefreshScreen> */}

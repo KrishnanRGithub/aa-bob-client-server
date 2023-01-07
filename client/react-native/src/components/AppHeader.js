@@ -5,26 +5,8 @@ import { signoutSession } from '../helpers/sessionHandler';
 import SplitScreenNavigator from './SplitScreenNavigator';
 const kebab_menu = require('../assets/icons/logout-menu.png');
 import {useFonts} from 'expo-font';
-
-import Profile from '../screens/tab/Profile';
-import Transaction from '../screens/tab/Transaction';
-
 const AppHeader = ({ title,subNav,children,routes }) => {
   const [logoutVisible, setLogoutVisible] = useState(false);
-  
-//   const split = {
-//     "Equities":{"isSet":true,
-//     "path":[
-//     {
-//       title: 'Holdings',
-//       component: <Profile />,
-//     },
-//     {
-//       title: 'Transactions',
-//       component: <Profile />,
-//     },
-//   ]}
-// };
 const [fontsLoaded] = useFonts({
   'headFont': require('../assets/head.ttf'),
 });

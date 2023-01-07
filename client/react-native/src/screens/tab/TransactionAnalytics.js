@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
+import AppBackground from "../../components/AppBackground";
+import AppHeader from "../../components/AppHeader";
+import Header from "../../components/Header";
 import ListButton from "../../components/ListButton";
+import RefreshScreen from "../../components/RefreshScreen";
 import { signoutSession, storeSession } from "../../helpers/sessionHandler";
 import { getSession } from "../../helpers/sessionHandler";
-import AppScreen from "../../components/AppScreen";
-export default function Profile({ navigation }) {
+
+export default function TransactionAnalytics({ navigation }) {
   const [userDetails,setUserDetails] = useState(null);
 
 
@@ -25,7 +29,11 @@ export default function Profile({ navigation }) {
     } 
 }
   return (
-    <AppScreen prop={{onRefresh:()=>{console.log("Refresh in profile")},title:"Profile", routes:null}} >
+    <RefreshScreen  onRefresh={()=>{console.log("Refreshing in Profile")}}>
+      <AppBackground>
+        <AppHeader title="Profile">
+        </AppHeader>
+
         <ListButton 
               item={{text:"Allow access in Account Aggregator",icon:"sync"}} 
               onPress={async ()=>{await removeAAUserIdFromSession();  navigation.navigate("StartScreen"); }} 
@@ -34,6 +42,8 @@ export default function Profile({ navigation }) {
               item={{text:"Logout",icon:"logout"}} 
               onPress={()=>{signoutSession(); navigation.navigate("Login");}} 
             /> 
-  </AppScreen>
+      </AppBackground>
+    </RefreshScreen>
+
   );
 }

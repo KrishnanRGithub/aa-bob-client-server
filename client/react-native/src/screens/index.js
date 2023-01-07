@@ -7,6 +7,7 @@ export { default as Logout } from "./Logout";
 export { default as NameScreen } from "./NameScreen";
 
 export { default as Equities } from "./tab/Equities";
+export { default as EquitiesHistory } from "./tab/EquitiesHistory";
 export { default as MutualFund } from "./tab/MutualFund";
 export { default as Profile } from "./tab/Profile";
 export { default as Transaction } from "./tab/Transaction";
